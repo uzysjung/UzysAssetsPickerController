@@ -7,6 +7,10 @@ UzysAssetsPickerController
 
 Alternative UIImagePickerController , You can take a picture with camera and pick multiple photos and videos
 
+![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController.gif)
+![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController1.png)
+![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController2.png)
+
 ## Installation
 1. UzysAssetsPickerController in your app is via CocoaPods.
 2. Copy over the files libary folder to your project folder
