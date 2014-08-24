@@ -75,7 +75,7 @@
 }
 - (void)btnAction:(id)sender
 {
-    NSLog(@"sender %@",sender);
+    DLog(@"sender %@",sender);
     UzysAssetsPickerController *picker = [[UzysAssetsPickerController alloc] init];
     picker.delegate = self;
     if([sender isEqual:self.btnImage])
@@ -105,7 +105,7 @@
 - (void)UzysAssetsPickerController:(UzysAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     self.imageView.backgroundColor = [UIColor clearColor];
-    NSLog(@"assets %@",assets);
+    DLog(@"assets %@",assets);
     if(assets.count ==1)
     {
         self.labelDescription.text = [NSString stringWithFormat:@"%ld asset selected",(unsigned long)assets.count];
@@ -154,7 +154,7 @@
             
             if (session.status == AVAssetExportSessionStatusCompleted)
             {
-                NSLog(@"output Video URL %@",uploadURL);
+                DLog(@"output Video URL %@",uploadURL);
             }
             
         }];

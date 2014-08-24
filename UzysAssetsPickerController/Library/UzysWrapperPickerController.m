@@ -49,7 +49,7 @@
 }
 - (void)dealloc
 {
-//    NSLog(@"UzysWrapperPicerController dealloc");
+//    DLog(@"UzysWrapperPicerController dealloc");
 }
 //-(NSUInteger)supportedInterfaceOrientations
 //{
