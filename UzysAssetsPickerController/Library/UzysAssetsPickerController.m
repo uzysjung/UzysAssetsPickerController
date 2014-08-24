@@ -581,11 +581,13 @@
 - (NSDictionary *)queryStringToDictionaryOfNSURL:(NSURL *)url
 {
     NSArray *urlComponents = [url.query componentsSeparatedByString:@"&"];
-    if (urlComponents.count <= 0) {
+    if (urlComponents.count <= 0)
+    {
         return nil;
     }
     NSMutableDictionary *queryDict = [NSMutableDictionary dictionary];
-    for (NSString *keyValuePair in urlComponents) {
+    for (NSString *keyValuePair in urlComponents)
+    {
         NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
         [queryDict setObject:pairComponents[1] forKey:pairComponents[0]];
     }
@@ -599,7 +601,8 @@
     [groups enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         ALAssetsGroup *g = obj;
         NSString *gid = [g valueForProperty:ALAssetsGroupPropertyPersistentID];
-        if ([gid isEqualToString:targetGroupId]) {
+        if ([gid isEqualToString:targetGroupId])
+        {
             index = idx;
             *stop = YES;
         }
@@ -613,10 +616,11 @@
 - (void)assetsLibraryUpdated:(NSNotification *)notification
 {
     //recheck here
-    if(![notification.name isEqualToString:ALAssetsLibraryChangedNotification]) {
+    if(![notification.name isEqualToString:ALAssetsLibraryChangedNotification])
+    {
         return ;
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         NSDictionary* info = [notification userInfo];
         NSSet *updatedAssets = [info objectForKey:ALAssetLibraryUpdatedAssetsKey];
@@ -634,39 +638,75 @@
             [self setupGroup:nil withSetupAsset:YES];
             return;
         }
-
-        if(info.count == 0) {
+        
+        if(info.count == 0)
+        {
             return;
         }
-
-        if (deletedAssetGroup.count > 0 || insertedAssetGroup.count > 0) {
+        
+        if (deletedAssetGroup.count > 0 || insertedAssetGroup.count > 0 || updatedAssetGroup.count >0)
+        {
             BOOL currentAssetsGroupIsInDeletedAssetGroup = NO;
+            BOOL currentAssetsGroupIsInUpdatedAssetGroup = NO;
             NSString *currentAssetGroupId = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyPersistentID];
             //check whether user deleted a chosen assetGroup.
-            for (NSURL *groupUrl in deletedAssetGroup) {
+            for (NSURL *groupUrl in deletedAssetGroup)
+            {
                 NSDictionary *queryDictionInURL = [self queryStringToDictionaryOfNSURL:groupUrl];
-                if ([queryDictionInURL[@"id"] isEqualToString:currentAssetGroupId]) {
+                if ([queryDictionInURL[@"id"] isEqualToString:currentAssetGroupId])
+                {
                     currentAssetsGroupIsInDeletedAssetGroup = YES;
                     break;
                 }
             }
-            if (currentAssetsGroupIsInDeletedAssetGroup) {
-                __weak typeof(self) weakSelf = self;
+            for (NSURL *groupUrl in updatedAssetGroup)
+            {
+                NSDictionary *queryDictionInURL = [self queryStringToDictionaryOfNSURL:groupUrl];
+                if ([queryDictionInURL[@"id"] isEqualToString:currentAssetGroupId])
+                {
+                    currentAssetsGroupIsInUpdatedAssetGroup = YES;
+                    break;
+                }
+            }
+            
+            __weak typeof(self) weakSelf = self;
+
+            if (currentAssetsGroupIsInDeletedAssetGroup || [self.assetsGroup numberOfAssets]==0)
+            {
                 //if user really deletes a chosen assetGroup, make it self.groups[0] to be default selected.
                 [self setupGroup:^{
+                    [weakSelf.groupPicker reloadData];
                     [weakSelf.groupPicker.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
                 } withSetupAsset:YES];
-            } else {
-                [self setupGroup:nil withSetupAsset:NO];
+            }
+            else
+            {
+                if(currentAssetsGroupIsInUpdatedAssetGroup)
+                {
+                    [self setupAssets:^{
+                        
+                    }];
+                    [self setupGroup:^{
+                        [weakSelf.groupPicker reloadData];
+                    } withSetupAsset:NO];
+
+                }
+                else
+                {
+                    [self setupGroup:^{
+                        [weakSelf.groupPicker reloadData];
+                    } withSetupAsset:NO];
+                }
             }
             return;
         }
-
+        
         if(updatedAssets.count == 1 && updatedAssetGroup.count == 0 && deletedAssetGroup.count == 0 && insertedAssetGroup.count == 0) //이미지픽커에서 앨범에 저장할 경우.
         {
             [self.assetsLibrary assetForURL:[updatedAssets allObjects][0] resultBlock:^(ALAsset *asset) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (self.assets.count == 0) {
+                    if (self.assets.count == 0)
+                    {
                         return ;
                     }
                     if([[[self.assets[0] valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
@@ -677,7 +717,7 @@
                     }
                     
                 });
-
+                
             } failureBlock:nil];
             return;
         }
@@ -708,7 +748,7 @@
                 [self.collectionView setContentOffset:CGPointMake(0, 0) animated:NO];
             }
         }];
-
+        
     });
 }
 #pragma mark - Property
