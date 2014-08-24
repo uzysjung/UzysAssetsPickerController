@@ -69,7 +69,6 @@
 }
 - (void)dealloc
 {
-//    DLog(@"dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
     self.assetsLibrary = nil;
     self.assetsGroup = nil;
@@ -717,7 +716,6 @@
 {
     [super setTitle:title];
     [self.btnTitle setTitle:title forState:UIControlStateNormal];
-    DLog(@" x %f self.btnTitle.labe width %f",self.btnTitle.titleLabel.frame.origin.x,self.btnTitle.titleLabel.bounds.size.width);
     [self.btnTitle setImageEdgeInsets:UIEdgeInsetsMake(5, self.btnTitle.titleLabel.frame.origin.x +self.btnTitle.titleLabel.frame.size.width + self.btnTitle.imageView.bounds.size.width, 0, 0)];
     [self.btnTitle setTitleEdgeInsets:UIEdgeInsetsMake(5, 0, 0, 0)];
     [self.btnTitle layoutIfNeeded];
