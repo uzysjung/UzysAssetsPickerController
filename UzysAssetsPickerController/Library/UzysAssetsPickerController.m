@@ -69,7 +69,7 @@
 }
 - (void)dealloc
 {
-//    NSLog(@"dealloc");
+//    DLog(@"dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
     self.assetsLibrary = nil;
     self.assetsGroup = nil;
@@ -462,7 +462,7 @@
     voidBlock setNoVideo = ^{
         UIImageView *imgView = (UIImageView *)[weakSelf.noAssetView viewWithTag:kTagNoAssetViewImageView];
         imgView.image = [UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_no_video"];
-        NSLog(@"no video");
+        DLog(@"no video");
         UILabel *title = (UILabel *)[weakSelf.noAssetView viewWithTag:kTagNoAssetViewTitleLabel];
         title.text = NSLocalizedStringFromTable(@"No Videos", @"UzysAssetsPickerController",nil);
         UILabel *msg = (UILabel *)[weakSelf.noAssetView viewWithTag:kTagNoAssetViewMsgLabel];
@@ -490,7 +490,7 @@
             {
                 UIImageView *imgView = (UIImageView *)[self.noAssetView viewWithTag:kTagNoAssetViewImageView];
                 imgView.image = [UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_no_image"];
-                NSLog(@"no media");
+                DLog(@"no media");
                 UILabel *title = (UILabel *)[self.noAssetView viewWithTag:kTagNoAssetViewTitleLabel];
                 title.text = NSLocalizedStringFromTable(@"No Videos", @"UzysAssetsPickerController",nil);
                 UILabel *msg = (UILabel *)[self.noAssetView viewWithTag:kTagNoAssetViewMsgLabel];
@@ -624,10 +624,10 @@
         NSSet *updatedAssetGroup = [info objectForKey:ALAssetLibraryUpdatedAssetGroupsKey];
         NSSet *deletedAssetGroup = [info objectForKey:ALAssetLibraryDeletedAssetGroupsKey];
         NSSet *insertedAssetGroup = [info objectForKey:ALAssetLibraryInsertedAssetGroupsKey];
-        NSLog(@"updated assets:%@", updatedAssets);
-        NSLog(@"updated asset group:%@", updatedAssetGroup);
-        NSLog(@"deleted asset group:%@", deletedAssetGroup);
-        NSLog(@"inserted asset group:%@", insertedAssetGroup);
+        DLog(@"updated assets:%@", updatedAssets);
+        DLog(@"updated asset group:%@", updatedAssetGroup);
+        DLog(@"deleted asset group:%@", deletedAssetGroup);
+        DLog(@"inserted asset group:%@", insertedAssetGroup);
         
         if(info == nil)
         {
@@ -717,7 +717,7 @@
 {
     [super setTitle:title];
     [self.btnTitle setTitle:title forState:UIControlStateNormal];
-    NSLog(@" x %f self.btnTitle.labe width %f",self.btnTitle.titleLabel.frame.origin.x,self.btnTitle.titleLabel.bounds.size.width);
+    DLog(@" x %f self.btnTitle.labe width %f",self.btnTitle.titleLabel.frame.origin.x,self.btnTitle.titleLabel.bounds.size.width);
     [self.btnTitle setImageEdgeInsets:UIEdgeInsetsMake(5, self.btnTitle.titleLabel.frame.origin.x +self.btnTitle.titleLabel.frame.size.width + self.btnTitle.imageView.bounds.size.width, 0, 0)];
     [self.btnTitle setTitleEdgeInsets:UIEdgeInsetsMake(5, 0, 0, 0)];
     [self.btnTitle layoutIfNeeded];
@@ -824,7 +824,7 @@
         }
             UIImage *image = info[UIImagePickerControllerOriginalImage];
             [self.assetsLibrary writeImageToSavedPhotosAlbum:image.CGImage metadata:info[UIImagePickerControllerMediaMetadata] completionBlock:^(NSURL *assetURL, NSError *error) {
-                NSLog(@"writeImageToSavedPhotosAlbum");
+                DLog(@"writeImageToSavedPhotosAlbum");
             }];
     }
     else //비디오 촬영시

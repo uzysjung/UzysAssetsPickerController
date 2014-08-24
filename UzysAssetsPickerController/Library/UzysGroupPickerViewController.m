@@ -111,7 +111,7 @@
             [UIView animateWithDuration:0.15f delay:0.f options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
                 self.containerView.transform = CGAffineTransformIdentity;
             } completion:^(BOOL finished) {
-//                NSLog(@"groups %@ frame %@ tableView frame %@ alpha %f",self.groups,NSStringFromCGRect(self.containerView.frame),NSStringFromCGRect(self.tableView.frame),self.containerView.alpha);
+//                DLog(@"groups %@ frame %@ tableView frame %@ alpha %f",self.groups,NSStringFromCGRect(self.containerView.frame),NSStringFromCGRect(self.tableView.frame),self.containerView.alpha);
             }];
         }];
         
