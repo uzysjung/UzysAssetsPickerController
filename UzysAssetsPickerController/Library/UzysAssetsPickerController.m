@@ -315,10 +315,15 @@
                     [weakSelf.groups addObject:group];
             }
         }
+        //traverse to the end, so reload groupPicker.
         else
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.groupPicker reloadData];
+                NSUInteger selectedIndex = [weakSelf indexOfAssetGroup:self.assetsGroup inGroups:self.groups];
+                if (selectedIndex != NSNotFound) {
+                    [weakSelf.groupPicker.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:selectedIndex inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+                }
                 if(endblock)
                     endblock();
             });
@@ -573,84 +578,135 @@
         }];
     }
 }
+#pragma mark - Helper methods
+- (NSDictionary *)queryStringToDictionaryOfNSURL:(NSURL *)url
+{
+    NSArray *urlComponents = [url.query componentsSeparatedByString:@"&"];
+    if (urlComponents.count <= 0) {
+        return nil;
+    }
+    NSMutableDictionary *queryDict = [NSMutableDictionary dictionary];
+    for (NSString *keyValuePair in urlComponents) {
+        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+        [queryDict setObject:pairComponents[1] forKey:pairComponents[0]];
+    }
+    return [queryDict copy];
+}
+
+- (NSUInteger)indexOfAssetGroup:(ALAssetsGroup *)group inGroups:(NSArray *)groups
+{
+    NSString *targetGroupId = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
+    __block NSUInteger index = NSNotFound;
+    [groups enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        ALAssetsGroup *g = obj;
+        NSString *gid = [g valueForProperty:ALAssetsGroupPropertyPersistentID];
+        if ([gid isEqualToString:targetGroupId]) {
+            index = idx;
+            *stop = YES;
+        }
+
+    }];
+    return index;
+}
+
 #pragma mark - Notification
 
 - (void)assetsLibraryUpdated:(NSNotification *)notification
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //recheck here
-        if([notification.name isEqualToString:ALAssetsLibraryChangedNotification])
-        {
-            NSDictionary* info = [notification userInfo];
-            NSSet *updatedAssets = [info objectForKey:ALAssetLibraryUpdatedAssetsKey];
-            NSSet *updatedAssetGroup = [info objectForKey:ALAssetLibraryUpdatedAssetGroupsKey];
-            NSSet *deletedAssetGroup = [info objectForKey:ALAssetLibraryDeletedAssetGroupsKey];
-            NSSet *insertedAssetGroup = [info objectForKey:ALAssetLibraryInsertedAssetGroupsKey];
-            NSLog(@"updated assets:%@", updatedAssets);
-            NSLog(@"updated asset group:%@", updatedAssetGroup);
-            NSLog(@"deleted asset group:%@", deletedAssetGroup);
-            NSLog(@"inserted asset group:%@", insertedAssetGroup);
-            
-            if(notification.userInfo == nil)
-            {
-                //AllClear
-                [self setupGroup:nil withSetupAsset:YES];
-                return;
-            }
-            if(insertedAssetGroup.count >0 || deletedAssetGroup.count > 0)
-            {
-                [self setupGroup:nil withSetupAsset:NO];
-                return;
-            }
-            if(notification.userInfo.count == 0) {
-                return;
-            }
-            
-            if(updatedAssets.count  <2 && updatedAssetGroup.count ==0 && deletedAssetGroup.count == 0 && insertedAssetGroup.count == 0) //이미지픽커에서 앨범에 저장할 경우.
-            {
-                [self.assetsLibrary assetForURL:[updatedAssets allObjects][0] resultBlock:^(ALAsset *asset) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if([[[self.assets[0] valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
-                        {
-                            NSIndexPath *newPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                            [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-                            [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
-                        }
-                        
-                    });
+    //recheck here
+    if(![notification.name isEqualToString:ALAssetsLibraryChangedNotification]) {
+        return ;
+    }
 
-                } failureBlock:nil];
-                return;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSDictionary* info = [notification userInfo];
+        NSSet *updatedAssets = [info objectForKey:ALAssetLibraryUpdatedAssetsKey];
+        NSSet *updatedAssetGroup = [info objectForKey:ALAssetLibraryUpdatedAssetGroupsKey];
+        NSSet *deletedAssetGroup = [info objectForKey:ALAssetLibraryDeletedAssetGroupsKey];
+        NSSet *insertedAssetGroup = [info objectForKey:ALAssetLibraryInsertedAssetGroupsKey];
+        NSLog(@"updated assets:%@", updatedAssets);
+        NSLog(@"updated asset group:%@", updatedAssetGroup);
+        NSLog(@"deleted asset group:%@", deletedAssetGroup);
+        NSLog(@"inserted asset group:%@", insertedAssetGroup);
+        
+        if(info == nil)
+        {
+            //AllClear
+            [self setupGroup:nil withSetupAsset:YES];
+            return;
+        }
+
+        if(info.count == 0) {
+            return;
+        }
+
+        if (deletedAssetGroup.count > 0 || insertedAssetGroup.count > 0) {
+            BOOL currentAssetsGroupIsInDeletedAssetGroup = NO;
+            NSString *currentAssetGroupId = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyPersistentID];
+            //check whether user deleted a chosen assetGroup.
+            for (NSURL *groupUrl in deletedAssetGroup) {
+                NSDictionary *queryDictionInURL = [self queryStringToDictionaryOfNSURL:groupUrl];
+                if ([queryDictionInURL[@"id"] isEqualToString:currentAssetGroupId]) {
+                    currentAssetsGroupIsInDeletedAssetGroup = YES;
+                    break;
+                }
             }
-            NSMutableArray *selectedItems = [NSMutableArray array];
-            NSArray *selectedPath = self.collectionView.indexPathsForSelectedItems;
-            
-            for (NSIndexPath *idxPath in selectedPath)
-            {
-                [selectedItems addObject:[self.assets objectAtIndex:idxPath.row]];
+            if (currentAssetsGroupIsInDeletedAssetGroup) {
+                __weak typeof(self) weakSelf = self;
+                //if user really deletes a chosen assetGroup, make it self.groups[0] to be default selected.
+                [self setupGroup:^{
+                    [weakSelf.groupPicker.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                } withSetupAsset:YES];
+            } else {
+                [self setupGroup:nil withSetupAsset:NO];
             }
-            NSInteger beforeAssets = self.assets.count;
-            [self setupAssets:^{
-                for (ALAsset *item in selectedItems)
-                {
-                    for(ALAsset *asset in self.assets)
+            return;
+        }
+
+        if(updatedAssets.count < 2 && updatedAssetGroup.count == 0 && deletedAssetGroup.count == 0 && insertedAssetGroup.count == 0) //이미지픽커에서 앨범에 저장할 경우.
+        {
+            [self.assetsLibrary assetForURL:[updatedAssets allObjects][0] resultBlock:^(ALAsset *asset) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if([[[self.assets[0] valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
                     {
-                        if([[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[item valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
-                        {
-                            NSUInteger idx = [self.assets indexOfObject:asset];
-                            NSIndexPath *newPath = [NSIndexPath indexPathForRow:idx inSection:0];
-                            [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-                        }
+                        NSIndexPath *newPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                        [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                        [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
+                    }
+                    
+                });
+
+            } failureBlock:nil];
+            return;
+        }
+        NSMutableArray *selectedItems = [NSMutableArray array];
+        NSArray *selectedPath = self.collectionView.indexPathsForSelectedItems;
+        
+        for (NSIndexPath *idxPath in selectedPath)
+        {
+            [selectedItems addObject:[self.assets objectAtIndex:idxPath.row]];
+        }
+        NSInteger beforeAssets = self.assets.count;
+        [self setupAssets:^{
+            for (ALAsset *item in selectedItems)
+            {
+                for(ALAsset *asset in self.assets)
+                {
+                    if([[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[item valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
+                    {
+                        NSUInteger idx = [self.assets indexOfObject:asset];
+                        NSIndexPath *newPath = [NSIndexPath indexPathForRow:idx inSection:0];
+                        [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
                     }
                 }
-                [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
-                if(self.assets.count > beforeAssets)
-                {
-                    [self.collectionView setContentOffset:CGPointMake(0, 0) animated:NO];
-                }
-            }];
-        }
-        
+            }
+            [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
+            if(self.assets.count > beforeAssets)
+            {
+                [self.collectionView setContentOffset:CGPointMake(0, 0) animated:NO];
+            }
+        }];
+
     });
 }
 #pragma mark - Property
