@@ -10,7 +10,7 @@ Alternative UIImagePickerController , You can take a picture with camera and pic
 ![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController.gif)
 
 ![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController1.png)![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController2.png)
-**UzysAnimatedGifPullToRefresh features:**
+**UzysAssetsPickerController features:**
 
 * Easily customize design using Inferface Builder.
 * You can take a picture or record a video in AssetPicker.
