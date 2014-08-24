@@ -5,15 +5,15 @@ UzysAssetsPickerController
 [![License MIT](https://img.shields.io/badge/contact-@Uzysjung-blue.svg?style=flat)](http://uzys.net)
 
 
-Alternative UIImagePickerController , You can take a picture with camera and pick multiple photos and videos
+Alternative UIImagePickerController , You can take a picture with camera and choose multiple photos and videos
 
 ![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController.gif)
 
 ![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController1.png)![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController2.png)
 **UzysAssetsPickerController features:**
 
-* Easily customize design using Inferface Builder. (XIB - 'UzysAssetsPickerController.xib')
-* You can take a picture or record a video in AssetPicker.
+* Easily customization using Inferface Builder. (XIB - 'UzysAssetsPickerController.xib')
+* With Assetpicker, taking pictures and or making videos are also possible.
 * UzysAssetPickerController automatically update photos that has been taken & saved with other apps  
 * ARC Only (if your project doesn't use ARC , Project -> Build Phases Tab -> Compile Sources Section -> Double Click on the file name Then add -fno-objc-arc to the popup window.)
 
@@ -120,6 +120,11 @@ Alternative UIImagePickerController , You can take a picture with camera and pic
   picker.delegate = self;
   picker.maximumNumberOfSelectionMedia = 5;
 ```
+
+### Customization
+- You can easily modify UzysAssetsPickerController Design using InterfaceBuilder
+- check out 'UzysAssetsPickerController.xib'
+
 ## Contact
  - [Uzys.net](http://uzys.net)
  - This Library was designed by [minjee Hahm](http://www.linkedin.com/pub/minjee-hahm/63/73/5a)
