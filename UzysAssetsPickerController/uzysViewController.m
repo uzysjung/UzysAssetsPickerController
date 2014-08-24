@@ -102,6 +102,8 @@
     }];
 
 }
+
+#pragma mark - UzysAssetsPickerControllerDelegate methods
 - (void)UzysAssetsPickerController:(UzysAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     self.imageView.backgroundColor = [UIColor clearColor];
@@ -161,5 +163,15 @@
         
     }
     
+}
+
+- (void)UzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:(UzysAssetsPickerController *)picker
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                    message:@"Exceed Maximum Number Of Selection"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 @end

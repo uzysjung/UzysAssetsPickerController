@@ -191,26 +191,26 @@
         self.maximumNumberOfSelection = self.maximumNumberOfSelectionMedia;
         self.segmentedControl.hidden = YES;
         self.labelSelectedMedia.hidden = NO;
-        if(_maximumNumberOfSelection >1)
+        if(_maximumNumberOfSelection > 1)
             self.labelSelectedMedia.text = @"Choose media";
         else
-            self.labelSelectedMedia.text = @"Choose media";
+            self.labelSelectedMedia.text = @"Choose a media";
 
     }
     else
     {
-        if(_maximumNumberOfSelectionPhoto ==0)
+        if(_maximumNumberOfSelectionPhoto == 0)
         {
             self.assetsFilter = [ALAssetsFilter allVideos];
             self.maximumNumberOfSelection = self.maximumNumberOfSelectionVideo;
             self.segmentedControl.hidden = YES;
             self.labelSelectedMedia.hidden = NO;
-            if(_maximumNumberOfSelection >1)
+            if(_maximumNumberOfSelection > 1)
                 self.labelSelectedMedia.text = @"Choose videos";
             else
                 self.labelSelectedMedia.text = @"Choose a video";
         }
-        else if(_maximumNumberOfSelectionVideo ==0)
+        else if(_maximumNumberOfSelectionVideo == 0)
         {
             self.assetsFilter = [ALAssetsFilter allPhotos];
             self.segmentedControl.selectedSegmentIndex = 0;
@@ -540,7 +540,11 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ([collectionView indexPathsForSelectedItems].count < self.maximumNumberOfSelection);
+    BOOL didExceedMaximumNumberOfSelection = [collectionView indexPathsForSelectedItems].count >= self.maximumNumberOfSelection;
+    if (didExceedMaximumNumberOfSelection && self.delegate && [self.delegate respondsToSelector:@selector(UzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
+        [self.delegate UzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:self];
+    }
+    return !didExceedMaximumNumberOfSelection;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
