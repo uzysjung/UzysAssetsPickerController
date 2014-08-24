@@ -663,10 +663,13 @@
             return;
         }
 
-        if(updatedAssets.count < 2 && updatedAssetGroup.count == 0 && deletedAssetGroup.count == 0 && insertedAssetGroup.count == 0) //이미지픽커에서 앨범에 저장할 경우.
+        if(updatedAssets.count == 1 && updatedAssetGroup.count == 0 && deletedAssetGroup.count == 0 && insertedAssetGroup.count == 0) //이미지픽커에서 앨범에 저장할 경우.
         {
             [self.assetsLibrary assetForURL:[updatedAssets allObjects][0] resultBlock:^(ALAsset *asset) {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    if (self.assets.count == 0) {
+                        return ;
+                    }
                     if([[[self.assets[0] valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
                     {
                         NSIndexPath *newPath = [NSIndexPath indexPathForRow:0 inSection:0];
