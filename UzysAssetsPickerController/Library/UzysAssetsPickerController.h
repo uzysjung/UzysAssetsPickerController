@@ -13,6 +13,7 @@
 - (void)UzysAssetsPickerController:(UzysAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets;
 @optional
 - (void)UzysAssetsPickerControllerDidCancel:(UzysAssetsPickerController *)picker;
+- (void)UzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:(UzysAssetsPickerController *)picker;
 @end
 
 @interface UzysAssetsPickerController : UIViewController
