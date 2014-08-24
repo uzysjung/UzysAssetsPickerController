@@ -12,7 +12,7 @@ Alternative UIImagePickerController , You can take a picture with camera and cho
 ![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController1.png)![Screenshot](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/UzysAssetsPickerController2.png)
 **UzysAssetsPickerController features:**
 
-* Easily customization using Inferface Builder. (XIB - 'UzysAssetsPickerController.xib')
+* Easy customization using Inferface Builder. (XIB - 'UzysAssetsPickerController.xib')
 * With Assetpicker, taking pictures and or making videos are also possible.
 * UzysAssetPickerController automatically update photos that has been taken & saved with other apps  
 * ARC Only (if your project doesn't use ARC , Project -> Build Phases Tab -> Compile Sources Section -> Double Click on the file name Then add -fno-objc-arc to the popup window.)
