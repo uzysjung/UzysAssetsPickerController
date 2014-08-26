@@ -7,6 +7,8 @@
 //
 
 #import "UzysAssetsViewCell.h"
+#import "UzysAppearanceConfig.h"
+
 @interface UzysAssetsViewCell()
 @property (nonatomic, strong) ALAsset *asset;
 @property (nonatomic, strong) UIImage *image;
@@ -27,13 +29,15 @@ static UIColor *selectedColor;
 
 + (void)initialize
 {
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+
     videoTitleColor      = [UIColor whiteColor];
     videoTimeFont       = [UIFont systemFontOfSize:12];
     videoTimeHeight     = 20.0f;
     videoIcon       = [UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_assets_video"];
     
-    checkedIcon     = [UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_photo_thumb_check"];
-    uncheckedIcon   = [UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_photo_thumb_uncheck"];
+    checkedIcon     = [UIImage Uzys_imageNamed:appearanceConfig.assetSelectedImageName];
+    uncheckedIcon   = [UIImage Uzys_imageNamed:appearanceConfig.assetDeselectedImageName];
     selectedColor   = [UIColor colorWithWhite:1 alpha:0.3];
 }
 

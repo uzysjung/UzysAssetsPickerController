@@ -7,6 +7,8 @@
 //
 #import "UzysAssetsPickerController_Configuration.h"
 #import "UzysGroupViewCell.h"
+#import "UzysAppearanceConfig.h"
+
 @implementation UzysGroupViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -16,7 +18,8 @@
         // Initialization code
         self.textLabel.font = [UIFont fontWithName:@"AppleSDGothicNeo-Medium" size:17];
         self.detailTextLabel.font = [UIFont fontWithName:@"AppleSDGothicNeo-Medium" size:11];
-        self.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_checkMark"]];
+        UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+        self.accessoryView = [[UIImageView alloc] initWithImage:[UIImage Uzys_imageNamed:appearanceConfig.assetsGroupSelectedImageName]];
         self.selectedBackgroundView = nil;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
     }

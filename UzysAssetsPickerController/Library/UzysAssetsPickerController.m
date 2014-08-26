@@ -10,6 +10,7 @@
 #import "UzysWrapperPickerController.h"
 #import "UzysGroupPickerView.h"
 #import "UzysGroupPickerViewController.h"
+#import "UzysAppearanceConfig.h"
 
 
 @interface UzysAssetsPickerController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
@@ -160,8 +161,11 @@
 }
 - (void)setupLayout
 {
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    [self.btnCamera setImage:[UIImage Uzys_imageNamed:appearanceConfig.cameraImageName] forState:UIControlStateNormal];
     self.btnDone.layer.cornerRadius = 15;
     self.btnDone.clipsToBounds = YES;
+    [self.btnDone setBackgroundColor:appearanceConfig.finishSelectionButtonColor];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bottomView.bounds.size.width, 0.5)];
     lineView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.15f];
@@ -230,6 +234,7 @@
         
     }
 }
+
 - (void)setupCollectionView
 {
     UICollectionViewFlowLayout *layout  = [[UICollectionViewFlowLayout alloc] init];
@@ -248,8 +253,19 @@
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.bounces = YES;
     self.collectionView.alwaysBounceVertical = YES;
-    
+
     [self.view insertSubview:self.collectionView atIndex:0];
+}
+
+#pragma mark - public methods
++ (void)setUpAppearanceConfig:(UzysAppearanceConfig *)config
+{
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    appearanceConfig.assetSelectedImageName = config.assetSelectedImageName;
+    appearanceConfig.assetDeselectedImageName = config.assetDeselectedImageName;
+    appearanceConfig.cameraImageName = config.cameraImageName;
+    appearanceConfig.finishSelectionButtonColor = config.finishSelectionButtonColor;
+    appearanceConfig.assetsGroupSelectedImageName = config.assetsGroupSelectedImageName;
 }
 
 - (void)changeGroup:(NSInteger)item filter:(ALAssetsFilter *)filter
