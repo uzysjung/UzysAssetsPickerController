@@ -75,7 +75,14 @@
 }
 - (void)btnAction:(id)sender
 {
-    DLog(@"sender %@",sender);
+    //if you want to checkout how to config appearance, just uncomment the following 4 lines code.
+#if 0
+    UzysAppearanceConfig *appearanceConfig = [[UzysAppearanceConfig alloc] init];
+    appearanceConfig.finishSelectionButtonColor = [UIColor blueColor];
+    appearanceConfig.assetsGroupSelectedImageName = @"checker";
+    [UzysAssetsPickerController setUpAppearanceConfig:appearanceConfig];
+#endif
+
     UzysAssetsPickerController *picker = [[UzysAssetsPickerController alloc] init];
     picker.delegate = self;
     if([sender isEqual:self.btnImage])
