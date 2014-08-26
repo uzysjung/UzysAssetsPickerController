@@ -27,14 +27,35 @@ Alternative UIImagePickerController , You can take a picture with camera and pic
 ``` objective-c
 #import "UzysAssetsPickerController.h"
 ```
+
+### Customize Appearance of UzysAssetsPickerController
+if you want to customize the appearance of UzysAssetsPickerController, you can init UzysAppearanceConfig instance, and config its property,
+then call
+
+``` objective-c
+    + (void)setUpAppearanceConfig:(UzysAppearanceConfig *)config
+```  
+of UzysAssetsPickerController before you init UzysAssetsPickerController
+
+sample code is like this:
+
+``` objective-c
+    UzysAppearanceConfig *appearanceConfig = [[UzysAppearanceConfig alloc] init];
+    appearanceConfig.finishSelectionButtonColor = [UIColor blueColor];
+    appearanceConfig.assetsGroupSelectedImageName = @"checker";
+    [UzysAssetsPickerController setUpAppearanceConfig:appearanceConfig];
+```
+
+for more configable properties, please refer to `UzysAppearanceConfig.h`
+
 ### open UzysAssetsPickerController
 ``` objective-c
     UzysAssetsPickerController *picker = [[UzysAssetsPickerController alloc] init];
     picker.delegate = self;
     picker.maximumNumberOfSelectionMedia = 2;
     [self presentViewController:picker animated:YES completion:^{
-        
-    }]; 
+
+    }];
 ```
 ### UzysAssetPickerControllerDelegate
 ``` objective-c
@@ -45,46 +66,46 @@ Alternative UIImagePickerController , You can take a picture with camera and pic
     {
             [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 ALAsset *representation = obj;
-                
+
                     UIImage *img = [UIImage imageWithCGImage:representation.defaultRepresentation.fullResolutionImage
                                                        scale:representation.defaultRepresentation.scale
                                                  orientation:(UIImageOrientation)representation.defaultRepresentation.orientation];
                 weakSelf.imageView.image = img;
                 *stop = YES;
             }];
-        
-        
+
+
     }
     else //Video
     {
         ALAsset *alAsset = assets[0];
-        
+
         UIImage *img = [UIImage imageWithCGImage:alAsset.defaultRepresentation.fullResolutionImage
                                            scale:alAsset.defaultRepresentation.scale
                                      orientation:(UIImageOrientation)alAsset.defaultRepresentation.orientation];
         weakSelf.imageView.image = img;
 
-        
-        
+
+
         ALAssetRepresentation *representation = alAsset.defaultRepresentation;
         NSURL *movieURL = representation.url;
         NSURL *uploadURL = [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"test"] stringByAppendingString:@".mp4"]];
         AVAsset *asset      = [AVURLAsset URLAssetWithURL:movieURL options:nil];
         AVAssetExportSession *session =
         [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
-        
+
         session.outputFileType  = AVFileTypeQuickTimeMovie;
         session.outputURL       = uploadURL;
-        
+
         [session exportAsynchronouslyWithCompletionHandler:^{
-            
+
             if (session.status == AVAssetExportSessionStatusCompleted)
             {
                 NSLog(@"output Video URL %@",uploadURL);
             }
-            
+
         }];
-        
+
     }
 }
 ```
@@ -127,4 +148,3 @@ Alternative UIImagePickerController , You can take a picture with camera and pic
 
 ## License
  - See [LICENSE](https://github.com/uzysjung/UzysAssetsPickerController/blob/master/LICENSE).
-
