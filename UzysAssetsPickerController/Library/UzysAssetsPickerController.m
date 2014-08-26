@@ -682,17 +682,44 @@
                     [weakSelf.groupPicker reloadData];
                     [weakSelf.groupPicker.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
                 } withSetupAsset:YES];
+                return;
             }
             else
             {
                 if(currentAssetsGroupIsInUpdatedAssetGroup)
                 {
+                    NSMutableArray *selectedItems = [NSMutableArray array];
+                    NSArray *selectedPath = self.collectionView.indexPathsForSelectedItems;
+                    
+                    for (NSIndexPath *idxPath in selectedPath)
+                    {
+                        [selectedItems addObject:[self.assets objectAtIndex:idxPath.row]];
+                    }
+                    NSInteger beforeAssets = self.assets.count;
                     [self setupAssets:^{
-                        
+                        for (ALAsset *item in selectedItems)
+                        {
+                            for(ALAsset *asset in self.assets)
+                            {
+                                if([[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[item valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
+                                {
+                                    NSUInteger idx = [self.assets indexOfObject:asset];
+                                    NSIndexPath *newPath = [NSIndexPath indexPathForRow:idx inSection:0];
+                                    [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                                }
+                            }
+                        }
+                        [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
+                        if(self.assets.count > beforeAssets)
+                        {
+                            [self.collectionView setContentOffset:CGPointMake(0, 0) animated:NO];
+                        }
+
                     }];
                     [self setupGroup:^{
                         [weakSelf.groupPicker reloadData];
                     } withSetupAsset:NO];
+                    
 
                 }
                 else
@@ -700,9 +727,10 @@
                     [self setupGroup:^{
                         [weakSelf.groupPicker reloadData];
                     } withSetupAsset:NO];
+                    return;
                 }
             }
-            return;
+            
         }
         
         if(updatedAssets.count == 1 && updatedAssetGroup.count == 0 && deletedAssetGroup.count == 0 && insertedAssetGroup.count == 0) //이미지픽커에서 앨범에 저장할 경우.
@@ -725,33 +753,7 @@
             } failureBlock:nil];
             return;
         }
-        NSMutableArray *selectedItems = [NSMutableArray array];
-        NSArray *selectedPath = self.collectionView.indexPathsForSelectedItems;
-        
-        for (NSIndexPath *idxPath in selectedPath)
-        {
-            [selectedItems addObject:[self.assets objectAtIndex:idxPath.row]];
-        }
-        NSInteger beforeAssets = self.assets.count;
-        [self setupAssets:^{
-            for (ALAsset *item in selectedItems)
-            {
-                for(ALAsset *asset in self.assets)
-                {
-                    if([[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[item valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
-                    {
-                        NSUInteger idx = [self.assets indexOfObject:asset];
-                        NSIndexPath *newPath = [NSIndexPath indexPathForRow:idx inSection:0];
-                        [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-                    }
-                }
-            }
-            [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
-            if(self.assets.count > beforeAssets)
-            {
-                [self.collectionView setContentOffset:CGPointMake(0, 0) animated:NO];
-            }
-        }];
+
         
     });
 }
