@@ -16,13 +16,3 @@
     #import "UIImage+UzysExtension.h"
 #endif
 
-#ifdef DEBUG
-// for debug mode
-#define DLog(f, ...) NSLog(f, ##__VA_ARGS__)
-
-#else
-
-// for release mode
-#define DLog(f, ...) /* noop */
-
-#endif
