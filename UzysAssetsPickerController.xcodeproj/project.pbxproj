@@ -32,7 +32,6 @@
 		95F443BF18AC606B0088FC13 /* UzysGroupPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F443BE18AC606B0088FC13 /* UzysGroupPickerView.m */; };
 		95F443C218AC62D10088FC13 /* UzysGroupViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F443C118AC62D10088FC13 /* UzysGroupViewCell.m */; };
 		95F443C518ACA0470088FC13 /* UzysGroupPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F443C418ACA0470088FC13 /* UzysGroupPickerViewController.m */; };
-		CC0545EC19AC2B9D00139501 /* checker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC0545EB19AC2B9D00139501 /* checker@2x.png */; };
 		CCE0A1C519AC197F00A5BE3A /* UIImage+UzysExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE0A1C419AC197F00A5BE3A /* UIImage+UzysExtension.m */; };
 		CCE0A1C819AC1F0200A5BE3A /* UzysAppearanceConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE0A1C719AC1F0200A5BE3A /* UzysAppearanceConfig.m */; };
 /* End PBXBuildFile section */
@@ -85,7 +84,6 @@
 		95F443C118AC62D10088FC13 /* UzysGroupViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = UzysGroupViewCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		95F443C318ACA0470088FC13 /* UzysGroupPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UzysGroupPickerViewController.h; sourceTree = "<group>"; };
 		95F443C418ACA0470088FC13 /* UzysGroupPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UzysGroupPickerViewController.m; sourceTree = "<group>"; };
-		CC0545EB19AC2B9D00139501 /* checker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checker@2x.png"; sourceTree = "<group>"; };
 		CCE0A1C319AC197F00A5BE3A /* UIImage+UzysExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+UzysExtension.h"; sourceTree = "<group>"; };
 		CCE0A1C419AC197F00A5BE3A /* UIImage+UzysExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+UzysExtension.m"; sourceTree = "<group>"; };
 		CCE0A1C619AC1F0200A5BE3A /* UzysAppearanceConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = UzysAppearanceConfig.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -161,7 +159,6 @@
 				95F4437018AB4AEF0088FC13 /* Main.storyboard */,
 				95F4437318AB4AEF0088FC13 /* uzysViewController.h */,
 				95F4437418AB4AEF0088FC13 /* uzysViewController.m */,
-				CC0545EB19AC2B9D00139501 /* checker@2x.png */,
 				95F4437618AB4AEF0088FC13 /* Images.xcassets */,
 				95F4436518AB4AEF0088FC13 /* Supporting Files */,
 			);
@@ -302,7 +299,6 @@
 			files = (
 				95F4437718AB4AEF0088FC13 /* Images.xcassets in Resources */,
 				95F4436918AB4AEF0088FC13 /* InfoPlist.strings in Resources */,
-				CC0545EC19AC2B9D00139501 /* checker@2x.png in Resources */,
 				95F4437218AB4AEF0088FC13 /* Main.storyboard in Resources */,
 				953E13B719A2CAE30012B4D9 /* UzysAssetPickerController.bundle in Resources */,
 				95F4439818AB4BBA0088FC13 /* UzysAssetsPickerController.xib in Resources */,

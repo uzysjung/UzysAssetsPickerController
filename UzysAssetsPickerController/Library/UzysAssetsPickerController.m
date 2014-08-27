@@ -10,9 +10,7 @@
 #import "UzysWrapperPickerController.h"
 #import "UzysGroupPickerView.h"
 #import "UzysGroupPickerViewController.h"
-#import "UzysAppearanceConfig.h"
-
-
+#import "UIImage+UzysExtension.h"
 @interface UzysAssetsPickerController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 //View
 @property (weak, nonatomic) IBOutlet UIButton *btnTitle;
