@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "UIImage+UzysExtension.h"
 @interface UzysAppearanceConfig : NSObject
 //selected photo/video checkmark
 @property (nonatomic, strong) NSString *assetSelectedImageName;
