@@ -16,6 +16,7 @@
 @optional
 - (void)UzysAssetsPickerControllerDidCancel:(UzysAssetsPickerController *)picker;
 - (void)UzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:(UzysAssetsPickerController *)picker;
+- (void)UzysAssetsPickerController:(UzysAssetsPickerController *)picker wantsCropViewForImage:(UIImage *)image;
 @end
 
 @interface UzysAssetsPickerController : UIViewController

@@ -21,7 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnCamera;
 
 @property (nonatomic, strong) UIView *noAssetView;
-@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) UzysWrapperPickerController *picker;
 @property (nonatomic, strong) UzysGroupPickerView *groupPicker;
 //@property (nonatomic, strong) UzysGroupPickerViewController *groupPicker;
@@ -240,18 +240,13 @@
     layout.minimumInteritemSpacing      = 1.0;
     layout.minimumLineSpacing           = 1.0;
 
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, 320, self.view.bounds.size.height - 64 -48) collectionViewLayout:layout];
-    self.collectionView.allowsMultipleSelection = YES;
+    self.collectionView.allowsMultipleSelection = NO;
     [self.collectionView registerClass:[UzysAssetsViewCell class]
             forCellWithReuseIdentifier:kAssetsViewCellIdentifier];
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.backgroundColor = [UIColor whiteColor];
-    self.collectionView.bounces = YES;
-    self.collectionView.alwaysBounceVertical = YES;
-
-    [self.view insertSubview:self.collectionView atIndex:0];
 }
 
 #pragma mark - public methods
@@ -551,23 +546,13 @@
 
 #pragma mark - Collection View Delegate
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    BOOL didExceedMaximumNumberOfSelection = [collectionView indexPathsForSelectedItems].count >= self.maximumNumberOfSelection;
-    if (didExceedMaximumNumberOfSelection && self.delegate && [self.delegate respondsToSelector:@selector(UzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
-        [self.delegate UzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:self];
-    }
-    return !didExceedMaximumNumberOfSelection;
-}
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
+    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
+    UIImage *image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullResolutionImage
+                                       scale:asset.defaultRepresentation.scale
+                                 orientation:(UIImageOrientation)asset.defaultRepresentation.orientation];
+    [self.delegate UzysAssetsPickerController:self wantsCropViewForImage:image];
 }
 
 
