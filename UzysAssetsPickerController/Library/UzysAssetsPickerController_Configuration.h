@@ -30,11 +30,15 @@ typedef void (^voidBlock)(void);
 
 #ifdef DEBUG
 // for debug mode
+#ifndef DLog
 #define DLog(f, ...) NSLog(f, ##__VA_ARGS__)
+#endif
 
 #else
 
 // for release mode
+#ifndef DLog
 #define DLog(f, ...) /* noop */
+#endif
 
 #endif
