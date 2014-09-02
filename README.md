@@ -18,7 +18,7 @@ Alternative UIImagePickerController , You can take a picture with camera and cho
 * ARC Only (if your project doesn't use ARC , Project -> Build Phases Tab -> Compile Sources Section -> Double Click on the file name Then add -fno-objc-arc to the popup window.)
 
 ## Installation
-1. UzysAssetsPickerController in your app is via CocoaPods.
+1. Just add `pod 'UzysAssetsPickerController'` to your Podfile.
 2. Copy over the files libary folder to your project folder
 
 ## Usage
