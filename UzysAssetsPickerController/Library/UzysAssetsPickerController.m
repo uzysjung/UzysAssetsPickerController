@@ -830,7 +830,7 @@
         {
             if([self.delegate respondsToSelector:@selector(UzysAssetsPickerControllerDidCancel:)])
             {
-                
+                [self.delegate UzysAssetsPickerControllerDidCancel:self];
             }
             [self dismissViewControllerAnimated:YES completion:^{
                 
