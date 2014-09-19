@@ -28,6 +28,7 @@
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(60, 50, 200, 200)];
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     self.imageView.backgroundColor = [UIColor lightGrayColor];
+    self.imageView.center = CGPointMake(self.view.center.x, self.imageView.center.y);
     [self.view addSubview:self.imageView];
 
     self.labelDescription = [[UILabel alloc] initWithFrame:CGRectMake(60, 260, 200, 20)];
@@ -41,6 +42,7 @@
     [self.btnImage setTitle:@"Image Only" forState:UIControlStateNormal];
     [self.btnImage addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
     self.btnImage.frame = frame;
+    self.btnImage.center = CGPointMake(self.view.center.x, self.btnImage.center.y);
     [self.view addSubview:self.btnImage];
     
     self.btnVideo = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -48,6 +50,7 @@
     [self.btnVideo addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
     frame.origin.y = frame.origin.y + 40;
     self.btnVideo.frame = frame;
+    self.btnVideo.center = CGPointMake(self.view.center.x, self.btnVideo.center.y);
     [self.view addSubview:self.btnVideo];
     
     self.btnImageOrVideo = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -55,6 +58,7 @@
     [self.btnImageOrVideo addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
     frame.origin.y = frame.origin.y + 40;
     self.btnImageOrVideo.frame = frame;
+    self.btnImageOrVideo.center = CGPointMake(self.view.center.x, self.btnImageOrVideo.center.y);
     [self.view addSubview:self.btnImageOrVideo];
     
     self.btnImageAndVideo = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -62,6 +66,7 @@
     [self.btnImageAndVideo addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
     frame.origin.y = frame.origin.y + 40;
     self.btnImageAndVideo.frame = frame;
+    self.btnImageAndVideo.center = CGPointMake(self.view.center.x, self.btnImageAndVideo.center.y);
     [self.view addSubview:self.btnImageAndVideo];
 }
 -(void)viewDidAppear:(BOOL)animated

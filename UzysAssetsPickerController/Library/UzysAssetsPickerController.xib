@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UzysAssetsPickerController">
@@ -10,6 +11,7 @@
                 <outlet property="btnCamera" destination="8h0-kN-iqH" id="BN1-UZ-Qbu"/>
                 <outlet property="btnDone" destination="abt-dZ-axW" id="2rA-uc-JhG"/>
                 <outlet property="btnTitle" destination="rd5-Z7-vdI" id="cgS-pE-KEI"/>
+                <outlet property="imageViewTitleArrow" destination="uvL-Np-IWv" id="Nbb-OE-YWu"/>
                 <outlet property="labelSelectedMedia" destination="HUE-lo-MS3" id="SFl-yr-V8h"/>
                 <outlet property="navigationTop" destination="eF0-Xh-u5U" id="gxF-h7-gEE"/>
                 <outlet property="segmentedControl" destination="44q-K1-3XI" id="15T-I7-UsW"/>
@@ -21,13 +23,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view tag="200" contentMode="scaleToFill" id="eF0-Xh-u5U" userLabel="NavigationTop">
+                <view tag="200" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eF0-Xh-u5U" userLabel="NavigationTop">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GMr-RU-k94" userLabel="Button - Close">
+                        <button opaque="NO" tag="101" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GMr-RU-k94" userLabel="Button - Close">
                             <rect key="frame" x="2" y="20" width="44" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" image="UzysAssetPickerController.bundle/uzysAP_navi_icon_close.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -35,27 +35,40 @@
                                 <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="yp1-Q0-WuH"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" id="rd5-Z7-vdI" userLabel="Button - Title">
+                        <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rd5-Z7-vdI" userLabel="Button - Title">
                             <rect key="frame" x="50" y="23" width="220" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="220" id="pid-dK-XVP"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="16"/>
-                            <state key="normal" title="." image="UzysAssetPickerController.bundle/uzysAP_ico_arrow_upload_album_d.png">
+                            <state key="normal" title=".">
                                 <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
                                 <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="9iB-BX-fxc"/>
                             </connections>
                         </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="UzysAssetPickerController.bundle/uzysAP_ico_arrow_upload_album_d.png" translatesAutoresizingMaskIntoConstraints="NO" id="uvL-Np-IWv">
+                            <rect key="frame" x="155" y="55" width="9" height="9"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="9" id="g2U-7j-09o"/>
+                                <constraint firstAttribute="width" constant="9" id="i2o-2b-m2Z"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="RWs-kl-R4L"/>
+                        <constraint firstItem="rd5-Z7-vdI" firstAttribute="top" secondItem="eF0-Xh-u5U" secondAttribute="top" constant="23" id="gpf-ZL-oEO"/>
+                        <constraint firstAttribute="centerX" secondItem="rd5-Z7-vdI" secondAttribute="centerX" id="o4w-kG-MCJ"/>
+                        <constraint firstAttribute="bottom" secondItem="rd5-Z7-vdI" secondAttribute="bottom" constant="1" id="qrL-Sb-ad9"/>
+                    </constraints>
                 </view>
-                <view tag="201" contentMode="scaleToFill" id="kxD-PY-Oat" userLabel="BottomView">
+                <view tag="201" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kxD-PY-Oat" userLabel="BottomView">
                     <rect key="frame" x="0.0" y="520" width="320" height="48"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
-                        <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8h0-kN-iqH" userLabel="Button - Camera">
+                        <button opaque="NO" tag="102" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8h0-kN-iqH" userLabel="Button - Camera">
                             <rect key="frame" x="22" y="5" width="40" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" image="UzysAssetPickerController.bundle/uzysAP_ico_upload_camera.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -64,10 +77,12 @@
                                 <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="2aB-DM-9M6"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="abt-dZ-axW">
+                        <button opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abt-dZ-axW">
                             <rect key="frame" x="249" y="9" width="55" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.88235294117647056" green="0.24313725490196078" blue="0.24313725490196078" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="55" id="QKW-c3-OwO"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <inset key="titleEdgeInsets" minX="-32" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -79,8 +94,11 @@
                                 <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="sbl-ar-Pla"/>
                             </connections>
                         </button>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="44q-K1-3XI">
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="44q-K1-3XI">
                             <rect key="frame" x="85" y="10" width="150" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="150" id="GmF-cg-Lkw"/>
+                            </constraints>
                             <segments>
                                 <segment title="Photo" width="74.5">
                                     <size key="contentOffset" width="0.0" height="1"/>
@@ -94,20 +112,39 @@
                                 <action selector="indexDidChangeForSegmentedControl:" destination="-1" eventType="valueChanged" id="xud-fs-HXo"/>
                             </connections>
                         </segmentedControl>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HUE-lo-MS3">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HUE-lo-MS3">
                             <rect key="frame" x="110" y="12" width="100" height="24"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="HP4-c4-4oE"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="abt-dZ-axW" secondAttribute="trailing" constant="16" id="3TZ-fj-zIL"/>
+                        <constraint firstItem="abt-dZ-axW" firstAttribute="top" secondItem="kxD-PY-Oat" secondAttribute="top" constant="9" id="6fZ-3n-daD"/>
+                        <constraint firstItem="HUE-lo-MS3" firstAttribute="top" secondItem="kxD-PY-Oat" secondAttribute="top" constant="12" id="BDJ-M9-sLm"/>
+                        <constraint firstAttribute="centerX" secondItem="HUE-lo-MS3" secondAttribute="centerX" id="Cqb-PH-WEn"/>
+                        <constraint firstAttribute="bottom" secondItem="HUE-lo-MS3" secondAttribute="bottom" constant="12" id="ZA1-gd-zrp"/>
+                        <constraint firstAttribute="height" constant="48" id="dnt-YD-Jtz"/>
+                        <constraint firstAttribute="bottom" secondItem="abt-dZ-axW" secondAttribute="bottom" constant="9" id="ehi-Px-fag"/>
+                        <constraint firstItem="44q-K1-3XI" firstAttribute="top" secondItem="kxD-PY-Oat" secondAttribute="top" constant="10" id="sPa-Ne-XLU"/>
+                        <constraint firstAttribute="centerX" secondItem="44q-K1-3XI" secondAttribute="centerX" id="x1J-0Q-Ppt"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="kxD-PY-Oat" secondAttribute="trailing" id="1Ea-x9-NZ5"/>
+                <constraint firstAttribute="bottom" secondItem="kxD-PY-Oat" secondAttribute="bottom" id="PMN-qw-pbb"/>
+                <constraint firstItem="eF0-Xh-u5U" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="R01-vz-y6u"/>
+                <constraint firstAttribute="trailing" secondItem="eF0-Xh-u5U" secondAttribute="trailing" id="RuS-yL-VLO"/>
+                <constraint firstItem="kxD-PY-Oat" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="lRT-Lk-7bJ"/>
+                <constraint firstItem="eF0-Xh-u5U" firstAttribute="top" secondItem="1" secondAttribute="top" id="r5i-6J-hnL"/>
+            </constraints>
         </view>
     </objects>
     <resources>
@@ -116,4 +153,9 @@
         <image name="UzysAssetPickerController.bundle/uzysAP_ico_upload_done.png" width="15" height="15"/>
         <image name="UzysAssetPickerController.bundle/uzysAP_navi_icon_close.png" width="15" height="15"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

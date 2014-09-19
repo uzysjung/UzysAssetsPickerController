@@ -12,6 +12,7 @@
 #import "UzysGroupPickerViewController.h"
 @interface UzysAssetsPickerController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 //View
+@property (weak, nonatomic) IBOutlet UIImageView *imageViewTitleArrow;
 @property (weak, nonatomic) IBOutlet UIButton *btnTitle;
 @property (weak, nonatomic) IBOutlet UIButton *btnDone;
 @property (weak, nonatomic) IBOutlet UIView *navigationTop;
@@ -93,12 +94,22 @@
     [self setupCollectionView];
     [self setupGroupPickerview];
     [self initNoAssetView];
+    
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.title = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName];
+    self.imageViewTitleArrow.hidden = NO;
+    
 }
 - (void)initVariable
 {
+    [self.imageViewTitleArrow setTranslatesAutoresizingMaskIntoConstraints:YES];
     self.assetsFilter = [ALAssetsFilter allPhotos];
     self.maximumNumberOfSelection = self.maximumNumberOfSelectionPhoto;
     self.view.clipsToBounds = YES;
+    self.imageViewTitleArrow.hidden = YES;
 }
 - (void)initImagePicker
 {
@@ -164,7 +175,7 @@
     self.btnDone.clipsToBounds = YES;
     [self.btnDone setBackgroundColor:appearanceConfig.finishSelectionButtonColor];
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bottomView.bounds.size.width, 0.5)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 0.5)];
     lineView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.15f];
     [self.bottomView addSubview:lineView];
 }
@@ -240,7 +251,7 @@
     layout.minimumInteritemSpacing      = 1.0;
     layout.minimumLineSpacing           = 1.0;
 
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, 320, self.view.bounds.size.height - 64 -48) collectionViewLayout:layout];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 -48) collectionViewLayout:layout];
     self.collectionView.allowsMultipleSelection = YES;
     [self.collectionView registerClass:[UzysAssetsViewCell class]
             forCellWithReuseIdentifier:kAssetsViewCellIdentifier];
@@ -348,7 +359,8 @@
         self.segmentedControl.enabled = NO;
         self.btnDone.enabled = NO;
         self.btnCamera.enabled = NO;
-        [self.btnTitle setTitle:NSLocalizedStringFromTable(@"Not Allowed", @"UzysAssetsPickerController",nil) forState:UIControlStateNormal];
+        [self setTitle:NSLocalizedStringFromTable(@"Not Allowed", @"UzysAssetsPickerController",nil)];
+//        [self.btnTitle setTitle:NSLocalizedStringFromTable(@"Not Allowed", @"UzysAssetsPickerController",nil) forState:UIControlStateNormal];
         [self.btnTitle setImage:nil forState:UIControlStateNormal];
         
     };
@@ -372,7 +384,7 @@
         self.assetsGroup = self.groups[0];
     }
     [self.assetsGroup setAssetsFilter:self.assetsFilter];
-    NSInteger assetCount = [self.assetsGroup numberOfAssets];
+//    NSInteger assetCount = [self.assetsGroup numberOfAssets];
     ALAssetsGroupEnumerationResultsBlock resultsBlock = ^(ALAsset *asset, NSUInteger index, BOOL *stop) {
         if (asset)
         {
@@ -386,7 +398,7 @@
                 self.numberOfVideos ++;
         }
         
-        else if (self.assets.count >= assetCount)
+        else //if (self.assets.count >= assetCount)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self reloadData];
@@ -775,20 +787,25 @@
 {
     [super setTitle:title];
     [self.btnTitle setTitle:title forState:UIControlStateNormal];
-    [self.btnTitle setImageEdgeInsets:UIEdgeInsetsMake(5, self.btnTitle.titleLabel.frame.origin.x +self.btnTitle.titleLabel.frame.size.width + self.btnTitle.imageView.bounds.size.width, 0, 0)];
+    [self.btnTitle setImageEdgeInsets:UIEdgeInsetsMake(5, 0, 0, 0)];
     [self.btnTitle setTitleEdgeInsets:UIEdgeInsetsMake(5, 0, 0, 0)];
     [self.btnTitle layoutIfNeeded];
+    CGRect contentBound = [self.btnTitle contentRectForBounds:self.navigationTop.bounds];
+    CGRect titleRect = [self.btnTitle titleRectForContentRect:self.navigationTop.bounds];
+    CGFloat arrowOriginX = contentBound.origin.x + titleRect.size.width + titleRect.origin.x;
+    self.imageViewTitleArrow.frame = CGRectMake(arrowOriginX + 5, self.btnTitle.frame.origin.y + 18, self.imageViewTitleArrow.frame.size.width, self.imageViewTitleArrow.frame.size.height);
+    [self.view setNeedsUpdateConstraints];
 }
 - (void)menuArrowRotate
 {
     [UIView animateWithDuration:0.35 animations:^{
         if(self.groupPicker.isOpen)
         {
-            self.btnTitle.imageView.transform = CGAffineTransformMakeRotation(M_PI);
+            self.imageViewTitleArrow.transform = CGAffineTransformMakeRotation(M_PI);
         }
         else
         {
-            self.btnTitle.imageView.transform = CGAffineTransformIdentity;
+            self.imageViewTitleArrow.transform = CGAffineTransformIdentity;
         }
     } completion:^(BOOL finished) {
     }];

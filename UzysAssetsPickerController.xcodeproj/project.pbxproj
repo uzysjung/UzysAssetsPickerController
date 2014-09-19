@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		95080AE419CC508900E69F29 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95080AE319CC508900E69F29 /* Launch Screen.xib */; };
 		953E13B719A2CAE30012B4D9 /* UzysAssetPickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 953E13B619A2CAE30012B4D9 /* UzysAssetPickerController.bundle */; };
 		956BBB55193460220017396E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956BBB54193460220017396E /* AVFoundation.framework */; };
 		95F4435F18AB4AEF0088FC13 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95F4435E18AB4AEF0088FC13 /* Foundation.framework */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		95080AE319CC508900E69F29 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		953E13B619A2CAE30012B4D9 /* UzysAssetPickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UzysAssetPickerController.bundle; sourceTree = "<group>"; };
 		956BBB54193460220017396E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		95F4435B18AB4AEF0088FC13 /* UzysAssetsPickerController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UzysAssetsPickerController.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,6 +122,7 @@
 		95F4435218AB4AEF0088FC13 = {
 			isa = PBXGroup;
 			children = (
+				95080AE319CC508900E69F29 /* Launch Screen.xib */,
 				95F4436418AB4AEF0088FC13 /* UzysAssetsPickerController */,
 				95F4438318AB4AEF0088FC13 /* UzysAssetsPickerControllerTests */,
 				95F4435D18AB4AEF0088FC13 /* Frameworks */,
@@ -302,6 +305,7 @@
 				95F4437218AB4AEF0088FC13 /* Main.storyboard in Resources */,
 				953E13B719A2CAE30012B4D9 /* UzysAssetPickerController.bundle in Resources */,
 				95F4439818AB4BBA0088FC13 /* UzysAssetsPickerController.xib in Resources */,
+				95080AE419CC508900E69F29 /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

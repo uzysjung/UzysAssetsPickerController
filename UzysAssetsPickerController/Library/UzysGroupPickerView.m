@@ -34,7 +34,7 @@
 - (void)setupLayout
 {
     //anchorPoint 를 잡는데 화살표 지점으로 잡아야함
-    self.frame = CGRectMake(0, - [UIScreen mainScreen].bounds.size.height, 320, [UIScreen mainScreen].bounds.size.height);;
+    self.frame = CGRectMake(0, - [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     self.layer.cornerRadius = 4;
     self.clipsToBounds = YES;
     self.backgroundColor = [UIColor whiteColor];
@@ -42,7 +42,7 @@
 }
 - (void)setupTableView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, NavigationHeight, 320, self.bounds.size.height -NavigationHeight) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, NavigationHeight, [UIScreen mainScreen].bounds.size.width, self.bounds.size.height -NavigationHeight) style:UITableViewStylePlain];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.tableView.contentInset = UIEdgeInsetsMake(1, 0, 0, 0);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -60,12 +60,12 @@
 - (void)show
 {
     [UIView animateWithDuration:0.25f delay:0.f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-        self.frame = CGRectMake(0, BounceAnimationPixel , 320, [UIScreen mainScreen].bounds.size.height);
+        self.frame = CGRectMake(0, BounceAnimationPixel , [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     } completion:^(BOOL finished) {
-            [UIView animateWithDuration:0.15f delay:0.f options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-                    self.frame = CGRectMake(0, 0 , 320, [UIScreen mainScreen].bounds.size.height);
-            } completion:^(BOOL finished) {
-            }];
+        [UIView animateWithDuration:0.15f delay:0.f options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
+            self.frame = CGRectMake(0, 0 , [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+        } completion:^(BOOL finished) {
+        }];
     }];
     self.isOpen = YES;
 }
@@ -73,17 +73,17 @@
 {
     if (!animated)
     {
-        self.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height, 320, [UIScreen mainScreen].bounds.size.height );
+        self.frame = CGRectMake(0, -[UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height );
     }
     else
     {
         [UIView animateWithDuration:0.3f animations:^{
-            self.frame = CGRectMake(0, - [UIScreen mainScreen].bounds.size.height, 320, [UIScreen mainScreen].bounds.size.height);
+            self.frame = CGRectMake(0, - [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
         } completion:^(BOOL finished) {
         }];
     }
     self.isOpen = NO;
-
+    
 }
 - (void)toggle
 {
