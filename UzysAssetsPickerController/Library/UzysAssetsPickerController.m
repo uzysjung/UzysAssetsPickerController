@@ -96,20 +96,12 @@
     [self initNoAssetView];
     
 }
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    self.title = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName];
-    self.imageViewTitleArrow.hidden = NO;
-    
-}
+
 - (void)initVariable
 {
-    [self.imageViewTitleArrow setTranslatesAutoresizingMaskIntoConstraints:YES];
     self.assetsFilter = [ALAssetsFilter allPhotos];
     self.maximumNumberOfSelection = self.maximumNumberOfSelectionPhoto;
     self.view.clipsToBounds = YES;
-    self.imageViewTitleArrow.hidden = YES;
 }
 - (void)initImagePicker
 {
@@ -126,46 +118,6 @@
          UIImagePickerControllerSourceTypeCamera];
     }
     self.picker = picker;
-}
-- (void)initNoAssetView
-{
-    UIView *noAssetsView    = [[UIView alloc] initWithFrame:self.collectionView.bounds];
-    
-    CGRect rect             = CGRectInset(self.collectionView.bounds, 10, 10);
-    UILabel *title          = [[UILabel alloc] initWithFrame:rect];
-    UILabel *message        = [[UILabel alloc] initWithFrame:rect];
-    
-    title.text              = NSLocalizedString(@"No Photos or Videos", nil);
-    title.font              = [UIFont systemFontOfSize:19.0];
-    title.textColor         = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1];
-    title.textAlignment     = NSTextAlignmentCenter;
-    title.numberOfLines     = 5;
-    title.tag               = kTagNoAssetViewTitleLabel;
-    
-    message.text            = NSLocalizedStringFromTable(@"You can sync photos and videos onto your iPhone using iTunes.", @"UzysAssetsPickerController",nil);
-    message.font            = [UIFont systemFontOfSize:15.0];
-    message.textColor       = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1];
-    message.textAlignment   = NSTextAlignmentCenter;
-    message.numberOfLines   = 5;
-    message.tag             = kTagNoAssetViewMsgLabel;
-    
-    UIImageView *titleImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_no_image"]];
-    titleImage.contentMode = UIViewContentModeCenter;
-    titleImage.tag = kTagNoAssetViewImageView;
-    
-    [title sizeToFit];
-    [message sizeToFit];
-    
-    title.center            = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - title.frame.size.height / 2 + 40);
-    message.center          = CGPointMake(noAssetsView.center.x, noAssetsView.center.y + 10 + message.frame.size.height / 2 + 20);
-    titleImage.center       = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - titleImage.frame.size.height /2);
-    [noAssetsView addSubview:title];
-    [noAssetsView addSubview:message];
-    [noAssetsView addSubview:titleImage];
-    
-    [self.collectionView addSubview:noAssetsView];
-    self.noAssetView = noAssetsView;
-    self.noAssetView.hidden = YES;
 }
 - (void)setupLayout
 {
@@ -384,7 +336,6 @@
         self.assetsGroup = self.groups[0];
     }
     [self.assetsGroup setAssetsFilter:self.assetsFilter];
-//    NSInteger assetCount = [self.assetsGroup numberOfAssets];
     ALAssetsGroupEnumerationResultsBlock resultsBlock = ^(ALAsset *asset, NSUInteger index, BOOL *stop) {
         if (asset)
         {
@@ -398,7 +349,7 @@
                 self.numberOfVideos ++;
         }
         
-        else //if (self.assets.count >= assetCount)
+        else
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self reloadData];
@@ -423,6 +374,47 @@
     [self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)indexPaths.count] forState:UIControlStateNormal];
 }
 
+#pragma mark - Asset Problem View 
+- (void)initNoAssetView
+{
+    UIView *noAssetsView    = [[UIView alloc] initWithFrame:self.collectionView.bounds];
+    
+    CGRect rect             = CGRectInset(self.collectionView.bounds, 10, 10);
+    UILabel *title          = [[UILabel alloc] initWithFrame:rect];
+    UILabel *message        = [[UILabel alloc] initWithFrame:rect];
+    
+    title.text              = NSLocalizedString(@"No Photos or Videos", nil);
+    title.font              = [UIFont systemFontOfSize:19.0];
+    title.textColor         = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1];
+    title.textAlignment     = NSTextAlignmentCenter;
+    title.numberOfLines     = 5;
+    title.tag               = kTagNoAssetViewTitleLabel;
+    
+    message.text            = NSLocalizedStringFromTable(@"You can sync photos and videos onto your iPhone using iTunes.", @"UzysAssetsPickerController",nil);
+    message.font            = [UIFont systemFontOfSize:15.0];
+    message.textColor       = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1];
+    message.textAlignment   = NSTextAlignmentCenter;
+    message.numberOfLines   = 5;
+    message.tag             = kTagNoAssetViewMsgLabel;
+    
+    UIImageView *titleImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_no_image"]];
+    titleImage.contentMode = UIViewContentModeCenter;
+    titleImage.tag = kTagNoAssetViewImageView;
+    
+    [title sizeToFit];
+    [message sizeToFit];
+    
+    title.center            = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - title.frame.size.height / 2 + 40);
+    message.center          = CGPointMake(noAssetsView.center.x, noAssetsView.center.y + 10 + message.frame.size.height / 2 + 20);
+    titleImage.center       = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - titleImage.frame.size.height /2);
+    [noAssetsView addSubview:title];
+    [noAssetsView addSubview:message];
+    [noAssetsView addSubview:titleImage];
+    
+    [self.collectionView addSubview:noAssetsView];
+    self.noAssetView = noAssetsView;
+    self.noAssetView.hidden = YES;
+}
 
 - (void)showNotAllowed
 {
@@ -790,11 +782,6 @@
     [self.btnTitle setImageEdgeInsets:UIEdgeInsetsMake(5, 0, 0, 0)];
     [self.btnTitle setTitleEdgeInsets:UIEdgeInsetsMake(5, 0, 0, 0)];
     [self.btnTitle layoutIfNeeded];
-    CGRect contentBound = [self.btnTitle contentRectForBounds:self.navigationTop.bounds];
-    CGRect titleRect = [self.btnTitle titleRectForContentRect:self.navigationTop.bounds];
-    CGFloat arrowOriginX = contentBound.origin.x + titleRect.size.width + titleRect.origin.x;
-    self.imageViewTitleArrow.frame = CGRectMake(arrowOriginX + 5, self.btnTitle.frame.origin.y + 18, self.imageViewTitleArrow.frame.size.width, self.imageViewTitleArrow.frame.size.height);
-    [self.view setNeedsUpdateConstraints];
 }
 - (void)menuArrowRotate
 {
