@@ -142,10 +142,7 @@
     [self.view insertSubview:self.groupPicker aboveSubview:self.bottomView];
     [self.view bringSubviewToFront:self.navigationTop];
     [self menuArrowRotate];
-//    self.groupPicker = [[UzysGroupPickerViewController alloc] initWithGroups:self.groups];
-//    [self addChildViewController:self.groupPicker];
-//    [self.view addSubview:self.groupPicker.view];
-//    [self didMoveToParentViewController:self.groupPicker];
+
 }
 - (void)setupOneMediaTypeSelection
 {
@@ -374,7 +371,7 @@
     [self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)indexPaths.count] forState:UIControlStateNormal];
 }
 
-#pragma mark - Asset Problem View 
+#pragma mark - Asset Exception View
 - (void)initNoAssetView
 {
     UIView *noAssetsView    = [[UIView alloc] initWithFrame:self.collectionView.bounds];
