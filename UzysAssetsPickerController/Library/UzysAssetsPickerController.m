@@ -9,7 +9,6 @@
 #import "UzysAssetsViewCell.h"
 #import "UzysWrapperPickerController.h"
 #import "UzysGroupPickerView.h"
-#import "UzysGroupPickerViewController.h"
 @interface UzysAssetsPickerController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 //View
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewTitleArrow;
