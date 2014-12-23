@@ -155,9 +155,9 @@
         self.segmentedControl.hidden = YES;
         self.labelSelectedMedia.hidden = NO;
         if(_maximumNumberOfSelection > 1)
-            self.labelSelectedMedia.text = @"Choose media";
+            self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose media", @"UzysAssetsPickerController", nil);
         else
-            self.labelSelectedMedia.text = @"Choose a media";
+            self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose a media", @"UzysAssetsPickerController", nil);
 
     }
     else
@@ -171,9 +171,9 @@
             self.segmentedControl.hidden = YES;
             self.labelSelectedMedia.hidden = NO;
             if(_maximumNumberOfSelection > 1)
-                self.labelSelectedMedia.text = @"Choose videos";
+                self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose videos", @"UzysAssetsPickerController", nil);
             else
-                self.labelSelectedMedia.text = @"Choose a video";
+                self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose a video", @"UzysAssetsPickerController", nil);
         }
         else if(_maximumNumberOfSelectionVideo == 0)
         {
@@ -185,9 +185,9 @@
             self.segmentedControl.hidden = YES;
             self.labelSelectedMedia.hidden = NO;
             if(_maximumNumberOfSelection >1)
-                self.labelSelectedMedia.text = @"Choose photos";
+                self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose photos", @"UzysAssetsPickerController", nil);
             else
-                self.labelSelectedMedia.text = @"Choose a photo";
+                self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose a photo", @"UzysAssetsPickerController", nil);
         }
         else
         {
@@ -394,7 +394,7 @@
     UILabel *title          = [[UILabel alloc] initWithFrame:rect];
     UILabel *message        = [[UILabel alloc] initWithFrame:rect];
     
-    title.text              = NSLocalizedString(@"No Photos or Videos", nil);
+    title.text              = NSLocalizedStringFromTable(@"No Photos or Videos", @"UzysAssetsPickerController", nil);
     title.font              = [UIFont systemFontOfSize:19.0];
     title.textColor         = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1];
     title.textAlignment     = NSTextAlignmentCenter;
@@ -799,12 +799,9 @@
         case kTagButtonCamera:
         {
             if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-                
-                UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                      message:@"Device has no camera"
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"OK"
-                                                            otherButtonTitles: nil];
+                NSString *title = NSLocalizedStringFromTable(@"Error", @"UzysAssetsPickerController", nil);
+                NSString *message = NSLocalizedStringFromTable(@"Device has no camera", @"UzysAssetsPickerController", nil);
+                UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [myAlertView show];
             }
             else
