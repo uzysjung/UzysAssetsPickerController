@@ -39,14 +39,14 @@
     
     CGRect frame = CGRectMake(60, 290, 200, 30);
     self.btnImage = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.btnImage setTitle:@"Image Only" forState:UIControlStateNormal];
+    [self.btnImage setTitle:NSLocalizedStringFromTable(@"Image Only", @"UzysAssetsPickerController", nil) forState:UIControlStateNormal];
     [self.btnImage addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
     self.btnImage.frame = frame;
     self.btnImage.center = CGPointMake(self.view.center.x, self.btnImage.center.y);
     [self.view addSubview:self.btnImage];
     
     self.btnVideo = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.btnVideo setTitle:@"Video Only" forState:UIControlStateNormal];
+    [self.btnVideo setTitle:NSLocalizedStringFromTable(@"Video Only", @"UzysAssetsPickerController", nil) forState:UIControlStateNormal];
     [self.btnVideo addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
     frame.origin.y = frame.origin.y + 40;
     self.btnVideo.frame = frame;
@@ -54,7 +54,7 @@
     [self.view addSubview:self.btnVideo];
     
     self.btnImageOrVideo = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.btnImageOrVideo setTitle:@"Image or Video" forState:UIControlStateNormal];
+    [self.btnImageOrVideo setTitle:NSLocalizedStringFromTable(@"Image or Video", @"UzysAssetsPickerController", nil) forState:UIControlStateNormal];
     [self.btnImageOrVideo addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
     frame.origin.y = frame.origin.y + 40;
     self.btnImageOrVideo.frame = frame;
@@ -62,7 +62,7 @@
     [self.view addSubview:self.btnImageOrVideo];
     
     self.btnImageAndVideo = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.btnImageAndVideo setTitle:@"Image and Video" forState:UIControlStateNormal];
+    [self.btnImageAndVideo setTitle:NSLocalizedStringFromTable(@"Image and Video", @"UzysAssetsPickerController", nil) forState:UIControlStateNormal];
     [self.btnImageAndVideo addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
     frame.origin.y = frame.origin.y + 40;
     self.btnImageAndVideo.frame = frame;
@@ -180,7 +180,7 @@
 - (void)UzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:(UzysAssetsPickerController *)picker
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                    message:@"Exceed Maximum Number Of Selection"
+                                                    message:NSLocalizedStringFromTable(@"Exceed Maximum Number Of Selection", @"UzysAssetsPickerController", nil)
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
