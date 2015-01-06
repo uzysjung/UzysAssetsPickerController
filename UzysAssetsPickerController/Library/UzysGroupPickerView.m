@@ -117,7 +117,11 @@
     {
         cell = [[UzysGroupViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-    [cell applyData:[self.groups objectAtIndex:indexPath.row]];
+    
+    if (self.groups.count > 0) {
+        [cell applyData:[self.groups objectAtIndex:indexPath.row]];
+    }
+    
     return cell;
 }
 
