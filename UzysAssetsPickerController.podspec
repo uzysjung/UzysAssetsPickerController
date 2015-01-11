@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => "MIT", :file => "LICENSE" }
   
   s.platform     = :ios , '7.0'
-  s.source       = { :git => "https://github.com/uzysjung/UzysAssetsPickerController.git", :tag => "0.9.3" }
+  s.source       = { :git => "https://github.com/uzysjung/UzysAssetsPickerController.git", :tag => "0.9.4" }
   s.requires_arc = true
   s.source_files = 'UzysAssetsPickerController/Library'
   s.resources = 'UzysAssetsPickerController/Library/*.xib','UzysAssetsPickerController/Library/UzysAssetPickerController.bundle'
