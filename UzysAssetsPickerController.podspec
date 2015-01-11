@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "UzysAssetsPickerController"
-  s.version      = "0.9.3"
+  s.version      = "0.9.4"
   s.summary      = "Alternative UIImagePickerController , You can take a picture with camera and pick multiple photos and videos."
   s.author       = { "UzysJung" => "uzysjung@gmail.com" }
 
