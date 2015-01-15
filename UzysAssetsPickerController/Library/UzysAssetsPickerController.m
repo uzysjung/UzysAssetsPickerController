@@ -125,7 +125,7 @@
 {
     UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
     [self.btnCamera setImage:[UIImage Uzys_imageNamed:appearanceConfig.cameraImageName] forState:UIControlStateNormal];
-	[self.btnClose setImage:[UIImage Uzys_imageNamed:appearanceConfig.closeImageName] forState:UIControlStateNormal];
+    [self.btnClose setImage:[UIImage Uzys_imageNamed:appearanceConfig.closeImageName] forState:UIControlStateNormal];
     self.btnDone.layer.cornerRadius = 15;
     self.btnDone.clipsToBounds = YES;
     [self.btnDone setBackgroundColor:appearanceConfig.finishSelectionButtonColor];
@@ -236,7 +236,7 @@
     appearanceConfig.cameraImageName = config.cameraImageName;
     appearanceConfig.finishSelectionButtonColor = config.finishSelectionButtonColor;
     appearanceConfig.assetsGroupSelectedImageName = config.assetsGroupSelectedImageName;
-	appearanceConfig.closeImageName = config.closeImageName;
+    appearanceConfig.closeImageName = config.closeImageName;
 }
 
 - (void)changeGroup:(NSInteger)item

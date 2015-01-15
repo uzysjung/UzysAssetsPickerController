@@ -54,10 +54,10 @@
 
 - (NSString *)closeImageName
 {
-	if (!_closeImageName) {
-		return @"uzysAP_navi_icon_close.png";
-	}
-	return _closeImageName;
+    if (!_closeImageName) {
+        return @"uzysAP_navi_icon_close";
+    }
+    return _closeImageName;
 }
 
 - (UIColor *)finishSelectionButtonColor
