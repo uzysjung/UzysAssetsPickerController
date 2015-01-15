@@ -52,6 +52,14 @@
     return _cameraImageName;
 }
 
+- (NSString *)closeImageName
+{
+	if (!_closeImageName) {
+		return @"uzysAP_navi_icon_close.png";
+	}
+	return _closeImageName;
+}
+
 - (UIColor *)finishSelectionButtonColor
 {
     if (!_finishSelectionButtonColor) {
