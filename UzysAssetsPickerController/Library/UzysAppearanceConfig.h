@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *assetDeselectedImageName;
 @property (nonatomic, strong) NSString *assetsGroupSelectedImageName;
 @property (nonatomic, strong) NSString *cameraImageName;
+@property (nonatomic, strong) NSString *closeImageName;
 @property (nonatomic, strong) UIColor *finishSelectionButtonColor;
 
 + (instancetype)sharedConfig;
