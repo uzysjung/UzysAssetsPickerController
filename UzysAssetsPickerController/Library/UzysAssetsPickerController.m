@@ -114,10 +114,21 @@
     picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        picker.mediaTypes =
+        NSArray *availableMediaTypes =
         [UIImagePickerController availableMediaTypesForSourceType:
          UIImagePickerControllerSourceTypeCamera];
+        NSMutableArray *mediaTypes = [NSMutableArray arrayWithArray:availableMediaTypes];
+
+        if (_maximumNumberOfSelectionMedia == 0)
+        {
+            if (_maximumNumberOfSelectionPhoto == 0)
+                [mediaTypes removeObject:@"public.image"];
+            else if (_maximumNumberOfSelectionVideo == 0)
+                [mediaTypes removeObject:@"public.movie"];
+        }
+
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.mediaTypes = mediaTypes;
     }
     self.picker = picker;
 }
