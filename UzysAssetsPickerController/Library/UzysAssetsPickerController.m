@@ -877,7 +877,7 @@
         return;
     [self.assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.assets.count == 0 || asset ==nil)
+            if (asset ==nil)
             {
                 return ;
             }
@@ -892,7 +892,8 @@
                 }
                 
                 [self.assets insertObject:asset atIndex:0];
-                [self.collectionView reloadData];
+                [self reloadData];
+
                 for (ALAsset *item in selectedItems)
                 {
                     for(ALAsset *asset in self.assets)
