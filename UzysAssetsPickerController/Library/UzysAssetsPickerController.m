@@ -583,7 +583,7 @@
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     BOOL didExceedMaximumNumberOfSelection = [collectionView indexPathsForSelectedItems].count >= self.maximumNumberOfSelection;
-    if (didExceedMaximumNumberOfSelection && self.delegate && [self.delegate respondsToSelector:@selector(UzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
+    if (didExceedMaximumNumberOfSelection && self.delegate && [self.delegate respondsToSelector:@selector(uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
         [self.delegate uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:self];
     }
     return !didExceedMaximumNumberOfSelection;
@@ -615,7 +615,7 @@
     {
         UzysAssetsPickerController *picker = (UzysAssetsPickerController *)self;
         
-        if([picker.delegate respondsToSelector:@selector(UzysAssetsPickerController:didFinishPickingAssets:)])
+        if([picker.delegate respondsToSelector:@selector(uzysAssetsPickerController:didFinishPickingAssets:)])
             [picker.delegate uzysAssetsPickerController:picker didFinishPickingAssets:assets];
         
         [self dismissViewControllerAnimated:YES completion:^{
@@ -837,7 +837,7 @@
             break;
         case kTagButtonClose:
         {
-            if([self.delegate respondsToSelector:@selector(UzysAssetsPickerControllerDidCancel:)])
+            if([self.delegate respondsToSelector:@selector(uzysAssetsPickerControllerDidCancel:)])
             {
                 [self.delegate uzysAssetsPickerControllerDidCancel:self];
             }
