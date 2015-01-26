@@ -26,6 +26,7 @@ static UIColor *videoTitleColor;
 static UIImage *checkedIcon;
 static UIImage *uncheckedIcon;
 static UIColor *selectedColor;
+static bool disableUncheckImage;
 
 + (void)initialize
 {
@@ -38,6 +39,7 @@ static UIColor *selectedColor;
     
     checkedIcon     = [UIImage Uzys_imageNamed:appearanceConfig.assetSelectedImageName];
     uncheckedIcon   = [UIImage Uzys_imageNamed:appearanceConfig.assetDeselectedImageName];
+    disableUncheckImage = appearanceConfig.disableUncheckImage;
     selectedColor   = [UIColor colorWithWhite:1 alpha:0.3];
 }
 
@@ -137,7 +139,8 @@ static UIColor *selectedColor;
     }
     else
     {
-        [uncheckedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - uncheckedIcon.size.width -2, CGRectGetMinY(rect)+2)];
+        if(!disableUncheckImage)
+            [uncheckedIcon drawAtPoint:CGPointMake(CGRectGetMaxX(rect) - uncheckedIcon.size.width -2, CGRectGetMinY(rect)+2)];
         
     }
 }

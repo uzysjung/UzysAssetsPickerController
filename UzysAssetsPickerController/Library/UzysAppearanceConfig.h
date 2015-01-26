@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSString *cameraImageName;
 @property (nonatomic, strong) NSString *closeImageName;
 @property (nonatomic, strong) UIColor *finishSelectionButtonColor;
+@property (nonatomic) BOOL disableUncheckImage;
 
 + (instancetype)sharedConfig;
 @end

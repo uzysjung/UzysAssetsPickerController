@@ -248,6 +248,7 @@
     appearanceConfig.finishSelectionButtonColor = config.finishSelectionButtonColor;
     appearanceConfig.assetsGroupSelectedImageName = config.assetsGroupSelectedImageName;
     appearanceConfig.closeImageName = config.closeImageName;
+    appearanceConfig.disableUncheckImage = config.disableUncheckImage;
 }
 
 - (void)changeGroup:(NSInteger)item

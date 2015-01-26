@@ -85,6 +85,7 @@
     UzysAppearanceConfig *appearanceConfig = [[UzysAppearanceConfig alloc] init];
     appearanceConfig.finishSelectionButtonColor = [UIColor blueColor];
     appearanceConfig.assetsGroupSelectedImageName = @"checker.png";
+    appearanceConfig.disableUncheckImage = YES;
     [UzysAssetsPickerController setUpAppearanceConfig:appearanceConfig];
 #endif
 
