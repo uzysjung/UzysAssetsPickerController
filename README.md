@@ -43,6 +43,7 @@ sample code is like this:
     UzysAppearanceConfig *appearanceConfig = [[UzysAppearanceConfig alloc] init];
     appearanceConfig.finishSelectionButtonColor = [UIColor blueColor];
     appearanceConfig.assetsGroupSelectedImageName = @"checker";
+    appearanceConfig.disableUncheckImage = YES;
     [UzysAssetsPickerController setUpAppearanceConfig:appearanceConfig];
 ```
 
