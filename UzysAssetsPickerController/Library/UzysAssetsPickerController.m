@@ -227,7 +227,7 @@
 
     UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
     if (appearanceConfig.useInline) {
-        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(8, 0, [UIScreen mainScreen].bounds.size.width - 16, [UIScreen mainScreen].bounds.size.height - 48) collectionViewLayout:layout];
+        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width - 16, [UIScreen mainScreen].bounds.size.height - 48) collectionViewLayout:layout];
     } else {
         self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 - 48) collectionViewLayout:layout];
     }
