@@ -444,9 +444,9 @@
 
     UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
     if (appearanceConfig.useInline) {
-        title.center            = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - title.frame.size.height / 2 + 40 - 64);
-        message.center          = CGPointMake(noAssetsView.center.x, noAssetsView.center.y + 10 + message.frame.size.height / 2 + 20 - 64);
-        titleImage.center       = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - titleImage.frame.size.height /2 -64);
+        title.center            = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - title.frame.size.height / 2 + 40 - 90);
+        message.center          = CGPointMake(noAssetsView.center.x, noAssetsView.center.y + 10 + message.frame.size.height / 2 + 20 - 90);
+        titleImage.center       = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - titleImage.frame.size.height /2 - 90);
     } else {
         title.center            = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - title.frame.size.height / 2 + 40);
         message.center          = CGPointMake(noAssetsView.center.x, noAssetsView.center.y + 10 + message.frame.size.height / 2 + 20);
@@ -638,10 +638,14 @@
         
         if([picker.delegate respondsToSelector:@selector(uzysAssetsPickerController:didFinishPickingAssets:)])
             [picker.delegate uzysAssetsPickerController:picker didFinishPickingAssets:assets];
-        
-        [self dismissViewControllerAnimated:YES completion:^{
-            
-        }];
+
+        // Don't dismiss view controller when shown inline.
+        UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+        if (!appearanceConfig.useInline) {
+            [self dismissViewControllerAnimated:YES completion:^{
+
+            }];
+        }
     }
 }
 #pragma mark - Helper methods
