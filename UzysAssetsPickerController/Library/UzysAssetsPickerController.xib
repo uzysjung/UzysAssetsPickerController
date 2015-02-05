@@ -114,7 +114,7 @@
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HUE-lo-MS3">
                             <rect key="frame" x="110" y="12" width="100" height="24"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="100" id="HP4-c4-4oE"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="HP4-c4-4oE"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
