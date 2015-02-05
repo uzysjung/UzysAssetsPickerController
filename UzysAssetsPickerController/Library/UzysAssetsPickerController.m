@@ -154,7 +154,12 @@
     };
     
     [self.view insertSubview:self.groupPicker aboveSubview:self.bottomView];
-    [self.view bringSubviewToFront:self.navigationTop];
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    if (appearanceConfig.useInline) {
+        [self.navigationTop setHidden:YES];
+    } else {
+        [self.view bringSubviewToFront:self.navigationTop];
+    }
     [self menuArrowRotate];
 
 }
@@ -219,7 +224,13 @@
     layout.minimumInteritemSpacing      = 1.0;
     layout.minimumLineSpacing           = 1.0;
 
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 -48) collectionViewLayout:layout];
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    if (appearanceConfig.useInline) {
+        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 48) collectionViewLayout:layout];
+    } else {
+        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 - 48) collectionViewLayout:layout];
+    }
+
     self.collectionView.allowsMultipleSelection = YES;
     [self.collectionView registerClass:[UzysAssetsViewCell class]
             forCellWithReuseIdentifier:kAssetsViewCellIdentifier];
@@ -248,6 +259,7 @@
     appearanceConfig.finishSelectionButtonColor = config.finishSelectionButtonColor;
     appearanceConfig.assetsGroupSelectedImageName = config.assetsGroupSelectedImageName;
     appearanceConfig.closeImageName = config.closeImageName;
+    appearanceConfig.useInline = config.useInline;
 }
 
 - (void)changeGroup:(NSInteger)item
