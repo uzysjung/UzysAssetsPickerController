@@ -7,8 +7,6 @@
 //
 #import "UzysAssetsPickerController.h"
 #import "UzysAssetsViewCell.h"
-#import "UzysWrapperPickerController.h"
-#import "UzysGroupPickerView.h"
 @interface UzysAssetsPickerController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 //View
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewTitleArrow;
@@ -22,9 +20,12 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnClose;
 
 @property (nonatomic, strong) UIView *noAssetView;
-@property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) UzysWrapperPickerController *picker;
-@property (nonatomic, strong) UzysGroupPickerView *groupPicker;
+
+// Making these public so I have access to config from parent view controller
+// @property (nonatomic, strong) UICollectionView *collectionView;
+// @property (nonatomic, strong) UzysWrapperPickerController *picker;
+// @property (nonatomic, strong) UzysGroupPickerView *groupPicker;
+
 //@property (nonatomic, strong) UzysGroupPickerViewController *groupPicker;
 
 @property (nonatomic, strong) ALAssetsGroup *assetsGroup;
@@ -139,7 +140,7 @@
     [self.btnClose setImage:[UIImage Uzys_imageNamed:appearanceConfig.closeImageName] forState:UIControlStateNormal];
     self.btnDone.layer.cornerRadius = 15;
     self.btnDone.clipsToBounds = YES;
-    [self.btnDone setBackgroundColor:appearanceConfig.finishSelectionButtonColor];
+    [self.btnDone setBackgroundColor:appearanceConfig.initialSelectionButtonColor];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 0.5)];
     lineView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.15f];
@@ -154,7 +155,12 @@
     };
     
     [self.view insertSubview:self.groupPicker aboveSubview:self.bottomView];
-    [self.view bringSubviewToFront:self.navigationTop];
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    if (appearanceConfig.useInline) {
+        [self.navigationTop setHidden:YES];
+    } else {
+        [self.view bringSubviewToFront:self.navigationTop];
+    }
     [self menuArrowRotate];
 
 }
@@ -219,14 +225,20 @@
     layout.minimumInteritemSpacing      = 1.0;
     layout.minimumLineSpacing           = 1.0;
 
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 -48) collectionViewLayout:layout];
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    if (appearanceConfig.useInline) {
+        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 48) collectionViewLayout:layout];
+    } else {
+        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 - 48) collectionViewLayout:layout];
+    }
+
     self.collectionView.allowsMultipleSelection = YES;
     [self.collectionView registerClass:[UzysAssetsViewCell class]
             forCellWithReuseIdentifier:kAssetsViewCellIdentifier];
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    self.collectionView.backgroundColor = [UIColor whiteColor];
+    self.collectionView.backgroundColor = [UIColor clearColor];
     self.collectionView.bounces = YES;
     self.collectionView.alwaysBounceVertical = YES;
 
@@ -248,6 +260,7 @@
     appearanceConfig.finishSelectionButtonColor = config.finishSelectionButtonColor;
     appearanceConfig.assetsGroupSelectedImageName = config.assetsGroupSelectedImageName;
     appearanceConfig.closeImageName = config.closeImageName;
+    appearanceConfig.useInline = config.useInline;
 }
 
 - (void)changeGroup:(NSInteger)item
@@ -390,13 +403,19 @@
 - (void)reloadData
 {
     [self.collectionView reloadData];
-    [self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)self.collectionView.indexPathsForSelectedItems
-                            .count] forState:UIControlStateNormal];
+    //[self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)self.collectionView.indexPathsForSelectedItems.count] forState:UIControlStateNormal];
     [self showNoAssetsIfNeeded];
 }
 - (void)setAssetsCountWithSelectedIndexPaths:(NSArray *)indexPaths
 {
-    [self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)indexPaths.count] forState:UIControlStateNormal];
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    if (indexPaths.count == self.maximumNumberOfSelection) {
+        [self.btnDone setBackgroundColor:appearanceConfig.finishSelectionButtonColor];
+    } else {
+        [self.btnDone setBackgroundColor:appearanceConfig.initialSelectionButtonColor];
+    }
+
+    //[self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)indexPaths.count] forState:UIControlStateNormal];
 }
 
 #pragma mark - Asset Exception View
@@ -428,10 +447,18 @@
     
     [title sizeToFit];
     [message sizeToFit];
-    
-    title.center            = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - title.frame.size.height / 2 + 40);
-    message.center          = CGPointMake(noAssetsView.center.x, noAssetsView.center.y + 10 + message.frame.size.height / 2 + 20);
-    titleImage.center       = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - titleImage.frame.size.height /2);
+
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    if (appearanceConfig.useInline) {
+        title.center            = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - title.frame.size.height / 2 + 40 - 90);
+        message.center          = CGPointMake(noAssetsView.center.x, noAssetsView.center.y + 10 + message.frame.size.height / 2 + 20 - 90);
+        titleImage.center       = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - titleImage.frame.size.height /2 - 90);
+    } else {
+        title.center            = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - title.frame.size.height / 2 + 40);
+        message.center          = CGPointMake(noAssetsView.center.x, noAssetsView.center.y + 10 + message.frame.size.height / 2 + 20);
+        titleImage.center       = CGPointMake(noAssetsView.center.x, noAssetsView.center.y - 10 - titleImage.frame.size.height /2);
+    }
+
     [noAssetsView addSubview:title];
     [noAssetsView addSubview:message];
     [noAssetsView addSubview:titleImage];
@@ -582,15 +609,23 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    BOOL didExceedMaximumNumberOfSelection = [collectionView indexPathsForSelectedItems].count >= self.maximumNumberOfSelection;
-    if (didExceedMaximumNumberOfSelection && self.delegate && [self.delegate respondsToSelector:@selector(uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
-        [self.delegate uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:self];
-    }
-    return !didExceedMaximumNumberOfSelection;
+//    BOOL didExceedMaximumNumberOfSelection = [collectionView indexPathsForSelectedItems].count >= self.maximumNumberOfSelection;
+//    if (didExceedMaximumNumberOfSelection && self.delegate && [self.delegate respondsToSelector:@selector(uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
+//        [self.delegate uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:self];
+//    }
+//    return !didExceedMaximumNumberOfSelection;
+    return YES;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Deselect other selected cells
+    for (NSIndexPath *toDeselect in self.collectionView.indexPathsForSelectedItems)
+    {
+        if (indexPath != toDeselect) {
+            [collectionView deselectItemAtIndexPath:toDeselect animated:YES];
+        }
+    }
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
@@ -613,14 +648,26 @@
     
     if([assets count]>0)
     {
+        // Let delegate know if we've somehow exceeded maximum number of assets here.
+        if ([assets count] > self.maximumNumberOfSelection) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
+                [self.delegate uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:self];
+            }
+            return;
+        }
+
         UzysAssetsPickerController *picker = (UzysAssetsPickerController *)self;
         
         if([picker.delegate respondsToSelector:@selector(uzysAssetsPickerController:didFinishPickingAssets:)])
             [picker.delegate uzysAssetsPickerController:picker didFinishPickingAssets:assets];
-        
-        [self dismissViewControllerAnimated:YES completion:^{
-            
-        }];
+
+        // Don't dismiss view controller when shown inline.
+        UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+        if (!appearanceConfig.useInline) {
+            [self dismissViewControllerAnimated:YES completion:^{
+
+            }];
+        }
     }
 }
 #pragma mark - Helper methods

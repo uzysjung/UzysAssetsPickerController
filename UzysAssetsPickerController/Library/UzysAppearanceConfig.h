@@ -16,7 +16,9 @@
 @property (nonatomic, strong) NSString *assetsGroupSelectedImageName;
 @property (nonatomic, strong) NSString *cameraImageName;
 @property (nonatomic, strong) NSString *closeImageName;
+@property (nonatomic, strong) UIColor *initialSelectionButtonColor;
 @property (nonatomic, strong) UIColor *finishSelectionButtonColor;
+@property (nonatomic) BOOL useInline;
 
 + (instancetype)sharedConfig;
 @end
