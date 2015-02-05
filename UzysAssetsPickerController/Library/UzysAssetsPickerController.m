@@ -140,7 +140,7 @@
     [self.btnClose setImage:[UIImage Uzys_imageNamed:appearanceConfig.closeImageName] forState:UIControlStateNormal];
     self.btnDone.layer.cornerRadius = 15;
     self.btnDone.clipsToBounds = YES;
-    [self.btnDone setBackgroundColor:appearanceConfig.finishSelectionButtonColor];
+    [self.btnDone setBackgroundColor:appearanceConfig.initialSelectionButtonColor];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 0.5)];
     lineView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.15f];
@@ -403,13 +403,19 @@
 - (void)reloadData
 {
     [self.collectionView reloadData];
-    [self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)self.collectionView.indexPathsForSelectedItems
-                            .count] forState:UIControlStateNormal];
+    //[self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)self.collectionView.indexPathsForSelectedItems.count] forState:UIControlStateNormal];
     [self showNoAssetsIfNeeded];
 }
 - (void)setAssetsCountWithSelectedIndexPaths:(NSArray *)indexPaths
 {
-    [self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)indexPaths.count] forState:UIControlStateNormal];
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    if (indexPaths.count == self.maximumNumberOfSelection) {
+        [self.btnDone setBackgroundColor:appearanceConfig.finishSelectionButtonColor];
+    } else {
+        [self.btnDone setBackgroundColor:appearanceConfig.initialSelectionButtonColor];
+    }
+
+    //[self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)indexPaths.count] forState:UIControlStateNormal];
 }
 
 #pragma mark - Asset Exception View
@@ -603,15 +609,23 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    BOOL didExceedMaximumNumberOfSelection = [collectionView indexPathsForSelectedItems].count >= self.maximumNumberOfSelection;
-    if (didExceedMaximumNumberOfSelection && self.delegate && [self.delegate respondsToSelector:@selector(uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
-        [self.delegate uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:self];
-    }
-    return !didExceedMaximumNumberOfSelection;
+//    BOOL didExceedMaximumNumberOfSelection = [collectionView indexPathsForSelectedItems].count >= self.maximumNumberOfSelection;
+//    if (didExceedMaximumNumberOfSelection && self.delegate && [self.delegate respondsToSelector:@selector(uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
+//        [self.delegate uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:self];
+//    }
+//    return !didExceedMaximumNumberOfSelection;
+    return YES;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Deselect other selected cells
+    for (NSIndexPath *toDeselect in self.collectionView.indexPathsForSelectedItems)
+    {
+        if (indexPath != toDeselect) {
+            [collectionView deselectItemAtIndexPath:toDeselect animated:YES];
+        }
+    }
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
@@ -634,6 +648,14 @@
     
     if([assets count]>0)
     {
+        // Let delegate know if we've somehow exceeded maximum number of assets here.
+        if ([assets count] > self.maximumNumberOfSelection) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:)]) {
+                [self.delegate uzysAssetsPickerControllerDidExceedMaximumNumberOfSelection:self];
+            }
+            return;
+        }
+
         UzysAssetsPickerController *picker = (UzysAssetsPickerController *)self;
         
         if([picker.delegate respondsToSelector:@selector(uzysAssetsPickerController:didFinishPickingAssets:)])
