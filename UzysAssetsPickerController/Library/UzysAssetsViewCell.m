@@ -26,7 +26,7 @@ static UIColor *videoTitleColor;
 static UIImage *checkedIcon;
 static UIImage *uncheckedIcon;
 static UIColor *selectedColor;
-
+static CGFloat thumnailLength;
 + (void)initialize
 {
     UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
@@ -39,6 +39,19 @@ static UIColor *selectedColor;
     checkedIcon     = [UIImage Uzys_imageNamed:appearanceConfig.assetSelectedImageName];
     uncheckedIcon   = [UIImage Uzys_imageNamed:appearanceConfig.assetDeselectedImageName];
     selectedColor   = [UIColor colorWithWhite:1 alpha:0.3];
+    
+    if(IS_IPHONE_6_IOS8)
+    {
+        thumnailLength = kThumbnailLength_IPHONE6;
+    }
+    else if(IS_IPHONE_6P_IOS8)
+    {
+        thumnailLength = kThumbnailLength_IPHONE6P;
+    }
+    else
+    {
+        thumnailLength = kThumbnailLength;
+    }
 }
 
 
@@ -49,6 +62,7 @@ static UIColor *selectedColor;
     {
         // Initialization code
         self.opaque = YES;
+        
     }
     return self;
 }
@@ -96,7 +110,7 @@ static UIColor *selectedColor;
 - (void)drawRect:(CGRect)rect
 {
     // Image
-    [self.image drawInRect:CGRectMake(0, 0, kThumbnailLength, kThumbnailLength)];
+    [self.image drawInRect:CGRectMake(0, 0, thumnailLength, thumnailLength)];
     
     // Video title
     if ([self.type isEqual:ALAssetTypeVideo])
@@ -123,9 +137,10 @@ static UIColor *selectedColor;
         
         NSDictionary *attributes = @{NSFontAttributeName:videoTimeFont,NSForegroundColorAttributeName:videoTitleColor};
         CGSize titleSize        = [self.title sizeWithAttributes:attributes];
-        [self.title drawInRect:CGRectMake(rect.size.width - (NSInteger)titleSize.width - 2 , startPoint.y + (videoTimeHeight - 12) / 2, kThumbnailLength, height) withAttributes:attributes];
+        [self.title drawInRect:CGRectMake(rect.size.width - (NSInteger)titleSize.width - 2 , startPoint.y + (videoTimeHeight - 12) / 2, thumnailLength, height) withAttributes:attributes];
         
         [videoIcon drawAtPoint:CGPointMake(2, startPoint.y + (videoTimeHeight - videoIcon.size.height) / 2)];
+        
     }
     
     if (self.selected)

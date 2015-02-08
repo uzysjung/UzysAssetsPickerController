@@ -9,6 +9,11 @@
 #import "UzysAssetsViewCell.h"
 #import "UzysWrapperPickerController.h"
 #import "UzysGroupPickerView.h"
+
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) // iPhone and       iPod touch style UI
+#define IS_IPHONE_6_IOS8 (IS_IPHONE && ([[UIScreen mainScreen] nativeBounds].size.height/[[UIScreen mainScreen] nativeScale]) == 667.0f)
+#define IS_IPHONE_6P_IOS8 (IS_IPHONE && ([[UIScreen mainScreen] nativeBounds].size.height/[[UIScreen mainScreen] nativeScale]) == 736.0f)
+
 @interface UzysAssetsPickerController ()<UICollectionViewDataSource,UICollectionViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 //View
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewTitleArrow;
@@ -213,8 +218,21 @@
 
 - (void)setupCollectionView
 {
+    
     UICollectionViewFlowLayout *layout  = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize                     = kThumbnailSize;
+    
+    if(IS_IPHONE_6_IOS8)
+    {
+        layout.itemSize = kThumbnailSize_IPHONE6;
+    }
+    else if(IS_IPHONE_6P_IOS8)
+    {
+        layout.itemSize = kThumbnailSize_IPHONE6P;
+    }
+    else
+    {
+        layout.itemSize                     = kThumbnailSize;
+    }
     layout.sectionInset                 = UIEdgeInsetsMake(1.0, 0, 0, 0);
     layout.minimumInteritemSpacing      = 1.0;
     layout.minimumLineSpacing           = 1.0;

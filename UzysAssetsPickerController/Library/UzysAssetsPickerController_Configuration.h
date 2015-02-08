@@ -10,11 +10,22 @@
 typedef void (^intBlock)(NSInteger);
 typedef void (^voidBlock)(void);
 
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) // iPhone and       iPod touch style UI
+#define IS_IPHONE_6_IOS8 (IS_IPHONE && ([[UIScreen mainScreen] nativeBounds].size.height/[[UIScreen mainScreen] nativeScale]) == 667.0f)
+#define IS_IPHONE_6P_IOS8 (IS_IPHONE && ([[UIScreen mainScreen] nativeBounds].size.height/[[UIScreen mainScreen] nativeScale]) == 736.0f)
+
 #define kGroupViewCellIdentifier           @"groupViewCellIdentifier"
 #define kAssetsViewCellIdentifier           @"AssetsViewCellIdentifier"
 #define kAssetsSupplementaryViewIdentifier  @"AssetsSupplementaryViewIdentifier"
-#define kThumbnailLength    78.0f
+#define kThumbnailLength    79.0f
+#define kThumbnailLength_IPHONE6    78.0f + 15.0f
+#define kThumbnailLength_IPHONE6P    78.0f + 24.5f
+
 #define kThumbnailSize      CGSizeMake(kThumbnailLength, kThumbnailLength)
+#define kThumbnailSize_IPHONE6 CGSizeMake(kThumbnailLength_IPHONE6,kThumbnailLength_IPHONE6)
+#define kThumbnailSize_IPHONE6P CGSizeMake(kThumbnailLength_IPHONE6P ,kThumbnailLength_IPHONE6P)
+
+#define THUMBNAIL_SIZE  if(IS_IPHONE) kThumbnailSize 
 
 #define kTagButtonClose 101
 #define kTagButtonCamera 102
