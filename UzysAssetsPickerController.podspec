@@ -11,9 +11,9 @@ Pod::Spec.new do |s|
   s.platform     = :ios , '7.0'
   s.source       = { :git => "https://github.com/uzysjung/UzysAssetsPickerController.git", :tag => "0.9.6" }
   s.requires_arc = true
-  s.source_files = 'UzysAssetsPickerController/Library'
-  s.resources = ['UzysAssetsPickerController/Library/*.xib','UzysAssetsPickerController/Library/UzysAssetPickerController.bundle']
-  s.public_header_files = 'UzysAssetsPickerController/Library/*.h'
-  s.ios.frameworks = 'QuartzCore' , 'MobileCoreServices' , 'AVFoundation' , 'AssetsLibrary' , 'CoreGraphics'
+  s.source_files = "UzysAssetsPickerController/Library"
+  s.resources = ["UzysAssetsPickerController/Library/*.{xib}","UzysAssetsPickerController/Library/UzysAssetPickerController.bundle"]
+  s.public_header_files = "UzysAssetsPickerController/Library/*.{h}"
+  s.ios.frameworks = "QuartzCore" , "MobileCoreServices" , "AVFoundation" , "AssetsLibrary" , "CoreGraphics"
   
 end
