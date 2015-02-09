@@ -147,7 +147,7 @@ for more configable properties, please refer to `UzysAppearanceConfig.h`
 - check out 'UzysAssetsPickerController.xib'
 
 ## ChangeLog
-- V0.9.6 - changing Delegate Method name because of supporting Swift. 
+- V0.9.6 - changing Delegate Method name because of supporting Swift. [#28](https://github.com/uzysjung/UzysAssetsPickerController/pull/28)
 
 ## Contact
  - [Uzys.net](http://uzys.net)
