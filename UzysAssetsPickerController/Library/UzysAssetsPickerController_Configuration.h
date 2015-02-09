@@ -11,8 +11,10 @@ typedef void (^intBlock)(NSInteger);
 typedef void (^voidBlock)(void);
 
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) // iPhone and       iPod touch style UI
-#define IS_IPHONE_6_IOS8 (IS_IPHONE && ([[UIScreen mainScreen] nativeBounds].size.height/[[UIScreen mainScreen] nativeScale]) == 667.0f)
-#define IS_IPHONE_6P_IOS8 (IS_IPHONE && ([[UIScreen mainScreen] nativeBounds].size.height/[[UIScreen mainScreen] nativeScale]) == 736.0f)
+#define IS_IOS8 ([[UIDevice currentDevice].systemVersion floatValue]>=8)
+#define IS_IPHONE_6_IOS8 (IS_IPHONE && IS_IOS8 &&([[UIScreen mainScreen] nativeBounds].size.height/[[UIScreen mainScreen] nativeScale]) == 667.0f)
+#define IS_IPHONE_6P_IOS8 (IS_IPHONE && IS_IOS8 &&([[UIScreen mainScreen] nativeBounds].size.height/[[UIScreen mainScreen] nativeScale]) == 736.0f)
+
 
 #define kGroupViewCellIdentifier           @"groupViewCellIdentifier"
 #define kAssetsViewCellIdentifier           @"AssetsViewCellIdentifier"
