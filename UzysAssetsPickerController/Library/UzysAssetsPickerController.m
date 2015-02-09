@@ -314,23 +314,24 @@
     ALAssetsFilter *assetsFilter = self.assetsFilter; // number of Asset 메쏘드 호출 시에 적용.
     
     ALAssetsLibraryGroupsEnumerationResultsBlock resultsBlock = ^(ALAssetsGroup *group, BOOL *stop) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         if (group)
         {
             [group setAssetsFilter:assetsFilter];
             NSInteger groupType = [[group valueForProperty:ALAssetsGroupPropertyType] integerValue];
             if(groupType == ALAssetsGroupSavedPhotos)
             {
-                [weakSelf.groups insertObject:group atIndex:0];
+                [strongSelf.groups insertObject:group atIndex:0];
                 if(doSetupAsset)
                 {
-                    weakSelf.assetsGroup = group;
-                    [weakSelf setupAssets:nil];
+                    strongSelf.assetsGroup = group;
+                    [strongSelf setupAssets:nil];
                 }
             }
             else
             {
                 if (group.numberOfAssets > 0)
-                    [weakSelf.groups addObject:group];
+                    [strongSelf.groups addObject:group];
             }
         }
         //traverse to the end, so reload groupPicker.
@@ -338,7 +339,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf.groupPicker reloadData];
-                NSUInteger selectedIndex = [weakSelf indexOfAssetGroup:self.assetsGroup inGroups:self.groups];
+                NSUInteger selectedIndex = [weakSelf indexOfAssetGroup:weakSelf.assetsGroup inGroups:weakSelf.groups];
                 if (selectedIndex != NSNotFound) {
                     [weakSelf.groupPicker.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:selectedIndex inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
                 }
@@ -347,16 +348,17 @@
             });
         }
     };
-
+    
     ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         //접근이 허락 안되었을 경우
-        [self showNotAllowed];
-        self.segmentedControl.enabled = NO;
-        self.btnDone.enabled = NO;
-        self.btnCamera.enabled = NO;
-        [self setTitle:NSLocalizedStringFromTable(@"Not Allowed", @"UzysAssetsPickerController",nil)];
+        [strongSelf showNotAllowed];
+        strongSelf.segmentedControl.enabled = NO;
+        strongSelf.btnDone.enabled = NO;
+        strongSelf.btnCamera.enabled = NO;
+        [strongSelf setTitle:NSLocalizedStringFromTable(@"Not Allowed", @"UzysAssetsPickerController",nil)];
 //        [self.btnTitle setTitle:NSLocalizedStringFromTable(@"Not Allowed", @"UzysAssetsPickerController",nil) forState:UIControlStateNormal];
-        [self.btnTitle setImage:nil forState:UIControlStateNormal];
+        [strongSelf.btnTitle setImage:nil forState:UIControlStateNormal];
         
     };
     
@@ -379,17 +381,20 @@
         self.assetsGroup = self.groups[0];
     }
     [self.assetsGroup setAssetsFilter:self.assetsFilter];
+    __weak typeof(self) weakSelf = self;
+
     ALAssetsGroupEnumerationResultsBlock resultsBlock = ^(ALAsset *asset, NSUInteger index, BOOL *stop) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         if (asset)
         {
-            [self.assets addObject:asset];
+            [strongSelf.assets addObject:asset];
             
             NSString *type = [asset valueForProperty:ALAssetPropertyType];
             
             if ([type isEqual:ALAssetTypePhoto])
-                self.numberOfPhotos ++;
+                strongSelf.numberOfPhotos ++;
             if ([type isEqual:ALAssetTypeVideo])
-                self.numberOfVideos ++;
+                strongSelf.numberOfVideos ++;
         }
         
         else
@@ -684,8 +689,9 @@
     {
         return ;
     }
-    
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
+        __strong typeof(self) strongSelf = weakSelf;
         NSDictionary* info = [notification userInfo];
         NSSet *updatedAssets = [info objectForKey:ALAssetLibraryUpdatedAssetsKey];
         NSSet *updatedAssetGroup = [info objectForKey:ALAssetLibraryUpdatedAssetGroupsKey];
@@ -701,7 +707,7 @@
         if(info == nil)
         {
             //AllClear
-            [self setupGroup:nil withSetupAsset:YES];
+            [strongSelf setupGroup:nil withSetupAsset:YES];
             return;
         }
         
@@ -714,11 +720,11 @@
         {
             BOOL currentAssetsGroupIsInDeletedAssetGroup = NO;
             BOOL currentAssetsGroupIsInUpdatedAssetGroup = NO;
-            NSString *currentAssetGroupId = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyPersistentID];
+            NSString *currentAssetGroupId = [strongSelf.assetsGroup valueForProperty:ALAssetsGroupPropertyPersistentID];
             //check whether user deleted a chosen assetGroup.
             for (NSURL *groupUrl in deletedAssetGroup)
             {
-                NSDictionary *queryDictionInURL = [self queryStringToDictionaryOfNSURL:groupUrl];
+                NSDictionary *queryDictionInURL = [strongSelf queryStringToDictionaryOfNSURL:groupUrl];
                 if ([queryDictionInURL[@"id"] isEqualToString:currentAssetGroupId])
                 {
                     currentAssetsGroupIsInDeletedAssetGroup = YES;
@@ -727,7 +733,7 @@
             }
             for (NSURL *groupUrl in updatedAssetGroup)
             {
-                NSDictionary *queryDictionInURL = [self queryStringToDictionaryOfNSURL:groupUrl];
+                NSDictionary *queryDictionInURL = [strongSelf queryStringToDictionaryOfNSURL:groupUrl];
                 if ([queryDictionInURL[@"id"] isEqualToString:currentAssetGroupId])
                 {
                     currentAssetsGroupIsInUpdatedAssetGroup = YES;
@@ -735,14 +741,12 @@
                 }
             }
             
-            __weak typeof(self) weakSelf = self;
-
-            if (currentAssetsGroupIsInDeletedAssetGroup || [self.assetsGroup numberOfAssets]==0)
+            if (currentAssetsGroupIsInDeletedAssetGroup || [strongSelf.assetsGroup numberOfAssets]==0)
             {
                 //if user really deletes a chosen assetGroup, make it self.groups[0] to be default selected.
-                [self setupGroup:^{
-                    [weakSelf.groupPicker reloadData];
-                    [weakSelf.groupPicker.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                [strongSelf setupGroup:^{
+                    [strongSelf.groupPicker reloadData];
+                    [strongSelf.groupPicker.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
                 } withSetupAsset:YES];
                 return;
             }
@@ -751,43 +755,43 @@
                 if(currentAssetsGroupIsInUpdatedAssetGroup)
                 {
                     NSMutableArray *selectedItems = [NSMutableArray array];
-                    NSArray *selectedPath = self.collectionView.indexPathsForSelectedItems;
+                    NSArray *selectedPath = strongSelf.collectionView.indexPathsForSelectedItems;
                     
                     for (NSIndexPath *idxPath in selectedPath)
                     {
-                        [selectedItems addObject:[self.assets objectAtIndex:idxPath.row]];
+                        [selectedItems addObject:[strongSelf.assets objectAtIndex:idxPath.row]];
                     }
-                    NSInteger beforeAssets = self.assets.count;
-                    [self setupAssets:^{
+                    NSInteger beforeAssets = strongSelf.assets.count;
+                    [strongSelf setupAssets:^{
                         for (ALAsset *item in selectedItems)
                         {
-                            for(ALAsset *asset in self.assets)
+                            for(ALAsset *asset in strongSelf.assets)
                             {
                                 if([[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[item valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
                                 {
-                                    NSUInteger idx = [self.assets indexOfObject:asset];
+                                    NSUInteger idx = [strongSelf.assets indexOfObject:asset];
                                     NSIndexPath *newPath = [NSIndexPath indexPathForRow:idx inSection:0];
-                                    [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                                    [strongSelf.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
                                 }
                             }
                         }
-                        [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
-                        if(self.assets.count > beforeAssets)
+                        [strongSelf setAssetsCountWithSelectedIndexPaths:strongSelf.collectionView.indexPathsForSelectedItems];
+                        if(strongSelf.assets.count > beforeAssets)
                         {
-                            [self.collectionView setContentOffset:CGPointMake(0, 0) animated:NO];
+                            [strongSelf.collectionView setContentOffset:CGPointMake(0, 0) animated:NO];
                         }
 
                     }];
-                    [self setupGroup:^{
-                        [weakSelf.groupPicker reloadData];
+                    [strongSelf setupGroup:^{
+                        [strongSelf.groupPicker reloadData];
                     } withSetupAsset:NO];
                     
 
                 }
                 else
                 {
-                    [self setupGroup:^{
-                        [weakSelf.groupPicker reloadData];
+                    [strongSelf setupGroup:^{
+                        [strongSelf.groupPicker reloadData];
                     } withSetupAsset:NO];
                     return;
                 }
@@ -840,14 +844,15 @@
             {
                 __weak typeof(self) weakSelf = self;
                 [self presentViewController:self.picker animated:YES completion:^{
+                    __strong typeof(self) strongSelf = weakSelf;
                     //카메라 화면으로 가면 강제로 카메라 롤로 변경.
-                    NSString *curGroupName =[[weakSelf.assetsGroup valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
-                    NSString *cameraRollName = [[weakSelf.groups[0] valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
+                    NSString *curGroupName =[[strongSelf.assetsGroup valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
+                    NSString *cameraRollName = [[strongSelf.groups[0] valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
                     
                     if(![curGroupName isEqualToString:cameraRollName] )
                     {
-                        weakSelf.assetsGroup = weakSelf.groups[0];
-                        [weakSelf changeGroup:0];
+                        strongSelf.assetsGroup = strongSelf.groups[0];
+                        [strongSelf changeGroup:0];
                     }
                 }];
             }
@@ -893,6 +898,7 @@
 - (void)saveAssetsAction:(NSURL *)assetURL error:(NSError *)error isPhoto:(BOOL)isPhoto {
     if(error)
         return;
+    __weak typeof(self) weakSelf = self;
     [self.assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (asset ==nil)
@@ -935,16 +941,18 @@
             }
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetsLibraryUpdated:) name:ALAssetsLibraryChangedNotification object:nil];
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                [[NSNotificationCenter defaultCenter] addObserver:strongSelf selector:@selector(assetsLibraryUpdated:) name:ALAssetsLibraryChangedNotification object:nil];
             });
             
             
         });
         
     } failureBlock:^(NSError *err){
-        
+
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetsLibraryUpdated:) name:ALAssetsLibraryChangedNotification object:nil];
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            [[NSNotificationCenter defaultCenter] addObserver:strongSelf selector:@selector(assetsLibraryUpdated:) name:ALAssetsLibraryChangedNotification object:nil];
         });
         
     }];
@@ -953,7 +961,7 @@
 #pragma mark - UIImagerPickerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-//    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     //사진 촬영 시
     if (CFStringCompare((CFStringRef) [info objectForKey:UIImagePickerControllerMediaType], kUTTypeImage, 0) == kCFCompareEqualTo)
     {
@@ -961,10 +969,10 @@
         {
             self.segmentedControl.selectedSegmentIndex = 0;
             [self changeAssetType:YES endBlock:^{
-                
+                __strong typeof(weakSelf) strongSelf = weakSelf;
                 UIImage *image = info[UIImagePickerControllerOriginalImage];
-                [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
-                [self.assetsLibrary writeImageToSavedPhotosAlbum:image.CGImage metadata:info[UIImagePickerControllerMediaMetadata] completionBlock:^(NSURL *assetURL, NSError *error) {
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf name:ALAssetsLibraryChangedNotification object:nil];
+                [strongSelf.assetsLibrary writeImageToSavedPhotosAlbum:image.CGImage metadata:info[UIImagePickerControllerMediaMetadata] completionBlock:^(NSURL *assetURL, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self saveAssetsAction:assetURL error:error isPhoto:YES];
                     });
@@ -979,8 +987,9 @@
             UIImage *image = info[UIImagePickerControllerOriginalImage];
             [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
             [self.assetsLibrary writeImageToSavedPhotosAlbum:image.CGImage metadata:info[UIImagePickerControllerMediaMetadata] completionBlock:^(NSURL *assetURL, NSError *error) {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self saveAssetsAction:assetURL error:error isPhoto:YES];
+                    [strongSelf saveAssetsAction:assetURL error:error isPhoto:YES];
                 });
                 DLog(@"writeImageToSavedPhotosAlbum");
             }];
@@ -992,8 +1001,10 @@
         {
             self.segmentedControl.selectedSegmentIndex = 1;
             [self changeAssetType:NO endBlock:^{
-                [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
-                [self.assetsLibrary writeVideoAtPathToSavedPhotosAlbum:info[UIImagePickerControllerMediaURL] completionBlock:^(NSURL *assetURL, NSError *error) {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                [[NSNotificationCenter defaultCenter] removeObserver:strongSelf name:ALAssetsLibraryChangedNotification object:nil];
+                [strongSelf.assetsLibrary writeVideoAtPathToSavedPhotosAlbum:info[UIImagePickerControllerMediaURL] completionBlock:^(NSURL *assetURL, NSError *error) {
                     DLog(@"assetURL %@",assetURL);
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self saveAssetsAction:assetURL error:error isPhoto:NO];
