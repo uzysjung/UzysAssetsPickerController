@@ -146,10 +146,12 @@ for more configable properties, please refer to `UzysAppearanceConfig.h`
 - You can easily modify UzysAssetsPickerController Design using InterfaceBuilder
 - check out 'UzysAssetsPickerController.xib'
 
+## ChangeLog
+- V0.9.6 - changing Delegate Method name because of supporting Swift. 
+
 ## Contact
  - [Uzys.net](http://uzys.net)
  - This Library was designed by [minjee Hahm](http://www.linkedin.com/pub/minjee-hahm/63/73/5a)
-
 
 ## License
  - See [LICENSE](https://github.com/uzysjung/UzysAssetsPickerController/blob/master/LICENSE).
