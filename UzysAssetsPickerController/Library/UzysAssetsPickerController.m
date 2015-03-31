@@ -38,6 +38,8 @@
 @property (nonatomic, assign) NSInteger maximumNumberOfSelection;
 @property (nonatomic, assign) NSInteger curAssetFilterType;
 
+@property (nonatomic, strong) NSMutableArray *orderedSelectedItem;
+
 - (IBAction)btnAction:(id)sender;
 - (IBAction)indexDidChangeForSegmentedControl:(id)sender;
 
@@ -105,6 +107,7 @@
     [self setAssetsFilter:[ALAssetsFilter allPhotos] type:1];
     self.maximumNumberOfSelection = self.maximumNumberOfSelectionPhoto;
     self.view.clipsToBounds = YES;
+    self.orderedSelectedItem = [[NSMutableArray alloc] init];
 }
 - (void)initImagePicker
 {
@@ -610,11 +613,13 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.orderedSelectedItem addObject:@(indexPath.item)];
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.orderedSelectedItem removeObject:@(indexPath.item)];
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
@@ -625,9 +630,9 @@
 {
     NSMutableArray *assets = [[NSMutableArray alloc] init];
     
-    for (NSIndexPath *indexPath in self.collectionView.indexPathsForSelectedItems)
+    for (NSNumber *index in self.orderedSelectedItem)
     {
-        [assets addObject:[self.assets objectAtIndex:indexPath.item]];
+        [assets addObject:[self.assets objectAtIndex:index.integerValue]];
     }
     
     if([assets count]>0)
