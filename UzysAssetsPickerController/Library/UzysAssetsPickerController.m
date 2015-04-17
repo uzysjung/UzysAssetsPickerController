@@ -613,13 +613,16 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.orderedSelectedItem addObject:@(indexPath.item)];
+    ALAsset *selectedAsset = [self.assets objectAtIndex:indexPath.item];
+    [self.orderedSelectedItem addObject:selectedAsset];
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.orderedSelectedItem removeObject:@(indexPath.item)];
+    ALAsset *deselectedAsset = [self.assets objectAtIndex:indexPath.item];
+
+    [self.orderedSelectedItem removeObject:deselectedAsset];
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
@@ -628,13 +631,13 @@
 
 - (void)finishPickingAssets
 {
-    NSMutableArray *assets = [[NSMutableArray alloc] init];
-    
-    for (NSNumber *index in self.orderedSelectedItem)
-    {
-        [assets addObject:[self.assets objectAtIndex:index.integerValue]];
-    }
-    
+    NSMutableArray *assets = [[NSMutableArray alloc] initWithArray:self.orderedSelectedItem];
+//
+//    for (NSIndexPath *index in self.orderedSelectedItem)
+//    {
+//        [assets addObject:[self.assets objectAtIndex:index.item]];
+//    }
+//    
     if([assets count]>0)
     {
         UzysAssetsPickerController *picker = (UzysAssetsPickerController *)self;
@@ -757,7 +760,7 @@
                 {
                     NSMutableArray *selectedItems = [NSMutableArray array];
                     NSArray *selectedPath = strongSelf.collectionView.indexPathsForSelectedItems;
-                    
+                  
                     for (NSIndexPath *idxPath in selectedPath)
                     {
                         [selectedItems addObject:[strongSelf.assets objectAtIndex:idxPath.row]];
@@ -766,6 +769,7 @@
                     [strongSelf setupAssets:^{
                         for (ALAsset *item in selectedItems)
                         {
+                            BOOL isExist = false;
                             for(ALAsset *asset in strongSelf.assets)
                             {
                                 if([[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[item valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
@@ -773,9 +777,15 @@
                                     NSUInteger idx = [strongSelf.assets indexOfObject:asset];
                                     NSIndexPath *newPath = [NSIndexPath indexPathForRow:idx inSection:0];
                                     [strongSelf.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                                    isExist = true;
                                 }
                             }
+                            if(isExist ==false)
+                            {
+                                [strongSelf.orderedSelectedItem removeObject:item];
+                            }
                         }
+                    
                         [strongSelf setAssetsCountWithSelectedIndexPaths:strongSelf.collectionView.indexPathsForSelectedItems];
                         if(strongSelf.assets.count > beforeAssets)
                         {
@@ -937,6 +947,7 @@
                 {
                     NSIndexPath *newPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                    [self.orderedSelectedItem addObject:asset];
                 }
                 [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
             }
