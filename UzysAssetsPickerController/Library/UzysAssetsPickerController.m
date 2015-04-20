@@ -698,7 +698,7 @@
 }
 
 // Mostly from here: http://stackoverflow.com/questions/3884060/need-help-in-saving-geotag-info-with-photo-on-ios4-1
-- (NSMutableDictionary*)addGPSLocation:(NSMutableDictionary *)metaData {
+- (void)addGPSLocation:(NSMutableDictionary *)metaData {
     
     if (self.location != nil) {
         
@@ -735,7 +735,6 @@
         
         [metaData setObject:locDict forKey:(NSString*)kCGImagePropertyGPSDictionary];
     }
-    return metaData;
 }
 
 #pragma mark - Notification
