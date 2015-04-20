@@ -39,6 +39,8 @@
 @property (nonatomic, assign) NSInteger maximumNumberOfSelection;
 @property (nonatomic, assign) NSInteger curAssetFilterType;
 
+@property (nonatomic, strong) NSMutableArray *orderedSelectedItem;
+
 - (IBAction)btnAction:(id)sender;
 - (IBAction)indexDidChangeForSegmentedControl:(id)sender;
 
@@ -108,6 +110,7 @@
     [self setAssetsFilter:[ALAssetsFilter allPhotos] type:1];
     self.maximumNumberOfSelection = self.maximumNumberOfSelectionPhoto;
     self.view.clipsToBounds = YES;
+    self.orderedSelectedItem = [[NSMutableArray alloc] init];
 }
 - (void)initImagePicker
 {
@@ -613,11 +616,16 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    ALAsset *selectedAsset = [self.assets objectAtIndex:indexPath.item];
+    [self.orderedSelectedItem addObject:selectedAsset];
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    ALAsset *deselectedAsset = [self.assets objectAtIndex:indexPath.item];
+    
+    [self.orderedSelectedItem removeObject:deselectedAsset];
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
@@ -626,13 +634,13 @@
 
 - (void)finishPickingAssets
 {
-    NSMutableArray *assets = [[NSMutableArray alloc] init];
-    
-    for (NSIndexPath *indexPath in self.collectionView.indexPathsForSelectedItems)
-    {
-        [assets addObject:[self.assets objectAtIndex:indexPath.item]];
-    }
-    
+    NSMutableArray *assets = [[NSMutableArray alloc] initWithArray:self.orderedSelectedItem];
+    //
+    //    for (NSIndexPath *index in self.orderedSelectedItem)
+    //    {
+    //        [assets addObject:[self.assets objectAtIndex:index.item]];
+    //    }
+    //
     if([assets count]>0)
     {
         UzysAssetsPickerController *picker = (UzysAssetsPickerController *)self;
@@ -815,6 +823,7 @@
                     [strongSelf setupAssets:^{
                         for (ALAsset *item in selectedItems)
                         {
+                            BOOL isExist = false;
                             for(ALAsset *asset in strongSelf.assets)
                             {
                                 if([[[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString] isEqualToString:[[item valueForProperty:ALAssetPropertyAssetURL] absoluteString]])
@@ -822,9 +831,15 @@
                                     NSUInteger idx = [strongSelf.assets indexOfObject:asset];
                                     NSIndexPath *newPath = [NSIndexPath indexPathForRow:idx inSection:0];
                                     [strongSelf.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                                    isExist = true;
                                 }
                             }
+                            if(isExist ==false)
+                            {
+                                [strongSelf.orderedSelectedItem removeObject:item];
+                            }
                         }
+                        
                         [strongSelf setAssetsCountWithSelectedIndexPaths:strongSelf.collectionView.indexPathsForSelectedItems];
                         if(strongSelf.assets.count > beforeAssets)
                         {
@@ -986,6 +1001,7 @@
                 {
                     NSIndexPath *newPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                    [self.orderedSelectedItem addObject:asset];
                 }
                 [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
             }
@@ -1043,7 +1059,7 @@
             
             NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:info[UIImagePickerControllerMediaMetadata]];
             [self addGPSLocation:metaData];
-            DLog(@"metadata: %@", metaData.description);
+            
             [self.assetsLibrary writeImageToSavedPhotosAlbum:image.CGImage metadata:metaData completionBlock:^(NSURL *assetURL, NSError *error) {
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 dispatch_async(dispatch_get_main_queue(), ^{
