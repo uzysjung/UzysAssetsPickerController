@@ -40,7 +40,7 @@ static CGFloat thumnailLength;
     uncheckedIcon   = [UIImage Uzys_imageNamed:appearanceConfig.assetDeselectedImageName];
     selectedColor   = [UIColor colorWithWhite:1 alpha:0.3];
     
-    thumnailLength = ([UIScreen mainScreen].bounds.size.width - 4.0f * ((CGFloat)appearanceConfig.assetsCountInALine - 1.0f)) / (CGFloat)appearanceConfig.assetsCountInALine;
+    thumnailLength = ([UIScreen mainScreen].bounds.size.width - appearanceConfig.cellSpacing * ((CGFloat)appearanceConfig.assetsCountInALine - 1.0f)) / (CGFloat)appearanceConfig.assetsCountInALine;
 }
 
 

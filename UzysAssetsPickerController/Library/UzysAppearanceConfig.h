@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIColor *finishSelectionButtonColor;
 //
 @property (nonatomic, assign) NSInteger assetsCountInALine;
+@property (nonatomic, assign) CGFloat cellSpacing;
 
 + (instancetype)sharedConfig;
 @end

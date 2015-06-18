@@ -222,11 +222,11 @@
     
     UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
     
-    CGFloat itemWidth = ([UIScreen mainScreen].bounds.size.width - 4.0f * ((CGFloat)appearanceConfig.assetsCountInALine - 1.0f)) / (CGFloat)appearanceConfig.assetsCountInALine;
+    CGFloat itemWidth = ([UIScreen mainScreen].bounds.size.width - appearanceConfig.cellSpacing * ((CGFloat)appearanceConfig.assetsCountInALine - 1.0f)) / (CGFloat)appearanceConfig.assetsCountInALine;
     layout.itemSize = CGSizeMake(itemWidth, itemWidth);
     layout.sectionInset                 = UIEdgeInsetsMake(1.0, 0, 0, 0);
     layout.minimumInteritemSpacing      = 1.0;
-    layout.minimumLineSpacing           = 1.0;
+    layout.minimumLineSpacing           = appearanceConfig.cellSpacing;
 
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 -48) collectionViewLayout:layout];
     self.collectionView.allowsMultipleSelection = YES;
@@ -259,6 +259,7 @@
     appearanceConfig.assetsGroupSelectedImageName = config.assetsGroupSelectedImageName;
     appearanceConfig.closeImageName = config.closeImageName;
     appearanceConfig.assetsCountInALine = config.assetsCountInALine;
+    appearanceConfig.cellSpacing = config.cellSpacing;
 }
 
 - (void)changeGroup:(NSInteger)item
