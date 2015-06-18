@@ -40,18 +40,7 @@ static CGFloat thumnailLength;
     uncheckedIcon   = [UIImage Uzys_imageNamed:appearanceConfig.assetDeselectedImageName];
     selectedColor   = [UIColor colorWithWhite:1 alpha:0.3];
     
-    if(IS_IPHONE_6_IOS8)
-    {
-        thumnailLength = kThumbnailLength_IPHONE6;
-    }
-    else if(IS_IPHONE_6P_IOS8)
-    {
-        thumnailLength = kThumbnailLength_IPHONE6P;
-    }
-    else
-    {
-        thumnailLength = kThumbnailLength;
-    }
+    thumnailLength = ([UIScreen mainScreen].bounds.size.width - 4.0f * ((CGFloat)appearanceConfig.assetsCountInALine - 1.0f)) / (CGFloat)appearanceConfig.assetsCountInALine;
 }
 
 
@@ -110,7 +99,7 @@ static CGFloat thumnailLength;
 - (void)drawRect:(CGRect)rect
 {
     // Image
-    [self.image drawInRect:CGRectMake(0, 0, thumnailLength, thumnailLength)];
+    [self.image drawInRect:CGRectMake(-.5f, -1.0f, thumnailLength+1.5f, thumnailLength+1.0f)];
     
     // Video title
     if ([self.type isEqual:ALAssetTypeVideo])

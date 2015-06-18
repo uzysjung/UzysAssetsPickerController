@@ -220,18 +220,10 @@
     
     UICollectionViewFlowLayout *layout  = [[UICollectionViewFlowLayout alloc] init];
     
-    if(IS_IPHONE_6_IOS8)
-    {
-        layout.itemSize = kThumbnailSize_IPHONE6;
-    }
-    else if(IS_IPHONE_6P_IOS8)
-    {
-        layout.itemSize = kThumbnailSize_IPHONE6P;
-    }
-    else
-    {
-        layout.itemSize                     = kThumbnailSize;
-    }
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    
+    CGFloat itemWidth = ([UIScreen mainScreen].bounds.size.width - 4.0f * ((CGFloat)appearanceConfig.assetsCountInALine - 1.0f)) / (CGFloat)appearanceConfig.assetsCountInALine;
+    layout.itemSize = CGSizeMake(itemWidth, itemWidth);
     layout.sectionInset                 = UIEdgeInsetsMake(1.0, 0, 0, 0);
     layout.minimumInteritemSpacing      = 1.0;
     layout.minimumLineSpacing           = 1.0;
@@ -265,6 +257,7 @@
     appearanceConfig.finishSelectionButtonColor = config.finishSelectionButtonColor;
     appearanceConfig.assetsGroupSelectedImageName = config.assetsGroupSelectedImageName;
     appearanceConfig.closeImageName = config.closeImageName;
+    appearanceConfig.assetsCountInALine = config.assetsCountInALine;
 }
 
 - (void)changeGroup:(NSInteger)item

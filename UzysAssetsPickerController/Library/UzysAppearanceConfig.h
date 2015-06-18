@@ -17,6 +17,8 @@
 @property (nonatomic, strong) NSString *cameraImageName;
 @property (nonatomic, strong) NSString *closeImageName;
 @property (nonatomic, strong) UIColor *finishSelectionButtonColor;
+//
+@property (nonatomic, assign) NSInteger assetsCountInALine;
 
 + (instancetype)sharedConfig;
 @end
