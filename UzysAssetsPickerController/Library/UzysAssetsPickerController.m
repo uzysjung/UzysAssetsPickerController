@@ -238,6 +238,7 @@
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.bounces = YES;
     self.collectionView.alwaysBounceVertical = YES;
+    self.collectionView.scrollsToTop = YES;
 
     [self.view insertSubview:self.collectionView atIndex:0];
 }

@@ -48,6 +48,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.tableView.scrollsToTop = NO;
     
     self.tableView.rowHeight = kGroupPickerViewCellLength;
     self.tableView.backgroundColor = [UIColor whiteColor];
