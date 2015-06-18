@@ -85,6 +85,8 @@
     UzysAppearanceConfig *appearanceConfig = [[UzysAppearanceConfig alloc] init];
     appearanceConfig.finishSelectionButtonColor = [UIColor blueColor];
     appearanceConfig.assetsGroupSelectedImageName = @"checker.png";
+    appearanceConfig.cellSpacing = 4.0f;
+    appearanceConfig.assetsCountInALine = 3;
     [UzysAssetsPickerController setUpAppearanceConfig:appearanceConfig];
 #endif
 
