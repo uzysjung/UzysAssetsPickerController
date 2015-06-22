@@ -223,22 +223,14 @@
     
     UICollectionViewFlowLayout *layout  = [[UICollectionViewFlowLayout alloc] init];
     
-    if(IS_IPHONE_6_IOS8)
-    {
-        layout.itemSize = kThumbnailSize_IPHONE6;
-    }
-    else if(IS_IPHONE_6P_IOS8)
-    {
-        layout.itemSize = kThumbnailSize_IPHONE6P;
-    }
-    else
-    {
-        layout.itemSize                     = kThumbnailSize;
-    }
+    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
+    
+    CGFloat itemWidth = ([UIScreen mainScreen].bounds.size.width - appearanceConfig.cellSpacing * ((CGFloat)appearanceConfig.assetsCountInALine - 1.0f)) / (CGFloat)appearanceConfig.assetsCountInALine;
+    layout.itemSize = CGSizeMake(itemWidth, itemWidth);
     layout.sectionInset                 = UIEdgeInsetsMake(1.0, 0, 0, 0);
     layout.minimumInteritemSpacing      = 1.0;
-    layout.minimumLineSpacing           = 1.0;
-    
+    layout.minimumLineSpacing           = appearanceConfig.cellSpacing;
+  
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64 -48) collectionViewLayout:layout];
     self.collectionView.allowsMultipleSelection = YES;
     [self.collectionView registerClass:[UzysAssetsViewCell class]
@@ -249,7 +241,8 @@
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.bounces = YES;
     self.collectionView.alwaysBounceVertical = YES;
-    
+    self.collectionView.scrollsToTop = YES;
+
     [self.view insertSubview:self.collectionView atIndex:0];
 }
 #pragma mark - Property
@@ -268,6 +261,8 @@
     appearanceConfig.finishSelectionButtonColor = config.finishSelectionButtonColor;
     appearanceConfig.assetsGroupSelectedImageName = config.assetsGroupSelectedImageName;
     appearanceConfig.closeImageName = config.closeImageName;
+    appearanceConfig.assetsCountInALine = config.assetsCountInALine;
+    appearanceConfig.cellSpacing = config.cellSpacing;
 }
 
 - (void)changeGroup:(NSInteger)item

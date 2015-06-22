@@ -16,6 +16,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         shared = [[self alloc] init];
+        shared.assetsCountInALine = 4;
+        shared.cellSpacing = 1.0f;
     });
     return shared;
 }
