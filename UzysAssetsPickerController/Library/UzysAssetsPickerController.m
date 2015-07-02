@@ -39,8 +39,6 @@
 @property (nonatomic, assign) NSInteger maximumNumberOfSelection;
 @property (nonatomic, assign) NSInteger curAssetFilterType;
 
-@property (nonatomic, strong) NSMutableArray *orderedSelectedItem;
-
 - (IBAction)btnAction:(id)sender;
 - (IBAction)indexDidChangeForSegmentedControl:(id)sender;
 
@@ -101,7 +99,6 @@
     [self setupCollectionView];
     [self setupGroupPickerview];
     [self initNoAssetView];
-    
 }
 
 - (void)initVariable
@@ -110,7 +107,7 @@
     [self setAssetsFilter:[ALAssetsFilter allPhotos] type:1];
     self.maximumNumberOfSelection = self.maximumNumberOfSelectionPhoto;
     self.view.clipsToBounds = YES;
-    self.orderedSelectedItem = [[NSMutableArray alloc] init];
+//    self.orderedSelectedItem = [[NSMutableArray alloc] init];
 }
 - (void)initImagePicker
 {
@@ -574,6 +571,15 @@
     }
 }
 
+- (BOOL)assetIsSelect:(ALAsset *)asset {
+    for (ALAsset *selectedAsset in self.selectedAssetArray) {
+        if ([asset.defaultRepresentation.url isEqual:selectedAsset.defaultRepresentation.url]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 
 #pragma mark - Collection View Data Source
 
@@ -592,8 +598,9 @@
     static NSString *CellIdentifier = kAssetsViewCellIdentifier;
     
     UzysAssetsViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    
+    ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
     [cell applyData:[self.assets objectAtIndex:indexPath.row]];
+    [cell setSelected:[self assetIsSelect:asset]];
     
     return cell;
 }
@@ -612,7 +619,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ALAsset *selectedAsset = [self.assets objectAtIndex:indexPath.item];
-    [self.orderedSelectedItem addObject:selectedAsset];
+    [self.selectedAssetArray addObject:selectedAsset];
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
@@ -620,7 +627,7 @@
 {
     ALAsset *deselectedAsset = [self.assets objectAtIndex:indexPath.item];
     
-    [self.orderedSelectedItem removeObject:deselectedAsset];
+    [self.selectedAssetArray removeObject:deselectedAsset];
     [self setAssetsCountWithSelectedIndexPaths:collectionView.indexPathsForSelectedItems];
 }
 
@@ -629,7 +636,7 @@
 
 - (void)finishPickingAssets
 {
-    NSMutableArray *assets = [[NSMutableArray alloc] initWithArray:self.orderedSelectedItem];
+    NSMutableArray *assets = [[NSMutableArray alloc] initWithArray:self.selectedAssetArray];
     //
     //    for (NSIndexPath *index in self.orderedSelectedItem)
     //    {
@@ -830,7 +837,7 @@
                             }
                             if(isExist ==false)
                             {
-                                [strongSelf.orderedSelectedItem removeObject:item];
+                                [strongSelf.selectedAssetArray removeObject:item];
                             }
                         }
                         
@@ -995,7 +1002,7 @@
                 {
                     NSIndexPath *newPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [self.collectionView selectItemAtIndexPath:newPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-                    [self.orderedSelectedItem addObject:asset];
+                    [self.selectedAssetArray addObject:asset];
                 }
                 [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
             }
@@ -1126,6 +1133,17 @@
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return UIInterfaceOrientationPortrait;
+}
+
+#pragma mark -
+#pragma mark .....:::::: Getter and Setter ::::::.....
+
+- (NSMutableArray *)selectedAssetArray {
+    if (!_selectedAssetArray) {
+        _selectedAssetArray = [[NSMutableArray alloc] init];
+    }
+    
+    return _selectedAssetArray;
 }
 
 @end
