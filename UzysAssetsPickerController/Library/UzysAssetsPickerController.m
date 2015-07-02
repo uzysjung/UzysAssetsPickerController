@@ -752,12 +752,12 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         __strong typeof(self) strongSelf = weakSelf;
         NSDictionary* info = [notification userInfo];
-        NSSet *updatedAssets = [info objectForKey:ALAssetLibraryUpdatedAssetsKey];
+//        NSSet *updatedAssets = [info objectForKey:ALAssetLibraryUpdatedAssetsKey];
         NSSet *updatedAssetGroup = [info objectForKey:ALAssetLibraryUpdatedAssetGroupsKey];
         NSSet *deletedAssetGroup = [info objectForKey:ALAssetLibraryDeletedAssetGroupsKey];
         NSSet *insertedAssetGroup = [info objectForKey:ALAssetLibraryInsertedAssetGroupsKey];
         DLog(@"-------------+");
-        DLog(@"updated assets:%@", updatedAssets);
+//        DLog(@"updated assets:%@", updatedAssets);
         DLog(@"updated asset group:%@", updatedAssetGroup);
         DLog(@"deleted asset group:%@", deletedAssetGroup);
         DLog(@"inserted asset group:%@", insertedAssetGroup);
