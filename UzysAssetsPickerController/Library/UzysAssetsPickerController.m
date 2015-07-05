@@ -94,6 +94,16 @@
     __weak typeof(self) weakSelf = self;
     [self setupGroup:^{
         [weakSelf.groupPicker.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+        
+        for (ALAsset *asset in self.assets) {
+            if ([self assetIsSelect:asset]) {
+                NSUInteger index = [self.assets indexOfObject:asset];
+                NSIndexPath *path = [NSIndexPath indexPathForItem:index inSection:0];
+                [self.collectionView selectItemAtIndexPath:path animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+            }
+        }
+        [self setAssetsCountWithSelectedIndexPaths:self.collectionView.indexPathsForSelectedItems];
+        
     } withSetupAsset:YES];
     [self setupLayout];
     [self setupCollectionView];
@@ -599,8 +609,8 @@
     
     UzysAssetsViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     ALAsset *asset = [self.assets objectAtIndex:indexPath.row];
-    [cell applyData:[self.assets objectAtIndex:indexPath.row]];
-    [cell setSelected:[self assetIsSelect:asset]];
+    [cell applyData:asset];
+//    [cell setSelected:[self assetIsSelect:asset]];
     
     return cell;
 }
