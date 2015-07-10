@@ -59,7 +59,7 @@ for more configable properties, please refer to `UzysAppearanceConfig.h`
 ```
 ### UzysAssetPickerControllerDelegate
 ``` objective-c
-- (void)UzysAssetsPickerController:(UzysAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+- (void)uzysAssetsPickerController:(UzysAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     __weak typeof(self) weakSelf = self;
     if([[assets[0] valueForProperty:@"ALAssetPropertyType"] isEqualToString:@"ALAssetTypePhoto"]) //Photo
