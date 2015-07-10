@@ -15,6 +15,9 @@
 @property (nonatomic,strong) UIButton *btnImageAndVideo;
 @property (nonatomic,strong) UIImageView *imageView;
 @property (nonatomic,strong) UILabel *labelDescription;
+
+@property (nonatomic,strong) NSMutableArray *selectedAssets;
+
 @end
 
 @implementation uzysViewController
@@ -91,6 +94,7 @@
 #endif
 
     UzysAssetsPickerController *picker = [[UzysAssetsPickerController alloc] init];
+    picker.selectedAssetArray = self.selectedAssets;
     picker.delegate = self;
     if([sender isEqual:self.btnImage])
     {
@@ -118,8 +122,13 @@
 }
 
 #pragma mark - UzysAssetsPickerControllerDelegate methods
+- (void)uzysAssetsPickerControllerDidCancel:(UzysAssetsPickerController *)picker {
+    [self.selectedAssets removeAllObjects];
+}
+
 - (void)uzysAssetsPickerController:(UzysAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
+    self.selectedAssets = [assets mutableCopy];
     self.imageView.backgroundColor = [UIColor clearColor];
     DLog(@"assets %@",assets);
     if(assets.count ==1)
@@ -188,4 +197,12 @@
                                           otherButtonTitles:nil];
     [alert show];
 }
+
+- (NSMutableArray *)selectedAssets {
+    if (!_selectedAssets) {
+        _selectedAssets = [[NSMutableArray alloc] init];
+    }
+    return _selectedAssets;
+}
+
 @end
