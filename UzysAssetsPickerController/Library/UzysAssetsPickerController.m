@@ -582,13 +582,23 @@
 }
 
 - (BOOL)assetIsSelect:(ALAsset *)asset {
-    for (ALAsset *selectedAsset in self.selectedAssetArray) {
+    BOOL isEqualAsset = NO;
+    int index = 0;
+    for ( int i = 0; i < self.selectedAssetArray.count; i++)
+    {
+        ALAsset *selectedAsset = self.selectedAssetArray[i];
         if ([asset.defaultRepresentation.url isEqual:selectedAsset.defaultRepresentation.url]) {
-            return YES;
+            index = i;
+            isEqualAsset = YES;
+            break;
         }
     }
+    if(isEqualAsset)
+    {
+        self.selectedAssetArray[index] = asset;
+    }
     
-    return NO;
+    return isEqualAsset;
 }
 
 #pragma mark - Collection View Data Source
