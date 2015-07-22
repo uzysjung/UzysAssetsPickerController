@@ -7,6 +7,7 @@
 //
 
 #import "UIImage+UzysExtension.h"
+#import "UzysAssetsPickerController.h"
 
 @implementation UIImage (UzysExtension)
 
@@ -18,6 +19,12 @@
     }
     NSString *imagePathInControllerBundle = [NSString stringWithFormat:@"UzysAssetPickerController.bundle/%@", imageName];
     image = [[self class] imageNamed:imagePathInControllerBundle];
+    if(image) {
+        return image;
+    }
+    //for Swift podfile
+    NSString *imagePathInBundleForClass = [NSString stringWithFormat:@"%@/UzysAssetPickerController.bundle/%@", [[NSBundle bundleForClass:[UzysAssetsPickerController class]] resourcePath], imageName ];
+    image = [[self class] imageNamed:imagePathInBundleForClass];
     return image;
 }
 @end
