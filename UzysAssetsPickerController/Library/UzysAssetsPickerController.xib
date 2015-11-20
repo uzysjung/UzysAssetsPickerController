@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UzysAssetsPickerController">
@@ -29,11 +29,12 @@
                     <subviews>
                         <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GMr-RU-k94" userLabel="Button - Close">
                             <rect key="frame" x="7" y="28" width="30" height="30"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="dUZ-MP-wO6"/>
                                 <constraint firstAttribute="width" constant="30" id="oKJ-E8-Zab"/>
                             </constraints>
-                            <state key="normal" image="UzysAssetPickerController.bundle/uzysAP_navi_icon_close.png">
+                            <state key="normal" image="uzysAP_navi_icon_close.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -42,10 +43,11 @@
                         </button>
                         <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rd5-Z7-vdI" userLabel="Button - Title">
                             <rect key="frame" x="145" y="23" width="30" height="40"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="pid-dK-XVP"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="16"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <state key="normal" title=".">
                                 <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
@@ -53,14 +55,16 @@
                                 <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="9iB-BX-fxc"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UzysAssetPickerController.bundle/uzysAP_ico_arrow_upload_album_d.png" translatesAutoresizingMaskIntoConstraints="NO" id="uvL-Np-IWv">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="uzysAP_ico_arrow_upload_album_d.png" translatesAutoresizingMaskIntoConstraints="NO" id="uvL-Np-IWv">
                             <rect key="frame" x="178" y="41" width="9" height="9"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="9" id="g2U-7j-09o"/>
                                 <constraint firstAttribute="width" constant="9" id="i2o-2b-m2Z"/>
                             </constraints>
                         </imageView>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="rd5-Z7-vdI" firstAttribute="trailing" secondItem="uvL-Np-IWv" secondAttribute="leading" constant="-3" id="5tI-lL-2ql"/>
@@ -76,25 +80,18 @@
                 <view tag="201" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kxD-PY-Oat" userLabel="BottomView">
                     <rect key="frame" x="0.0" y="520" width="320" height="48"/>
                     <subviews>
-                        <button opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abt-dZ-axW">
-                            <rect key="frame" x="249" y="9" width="55" height="30"/>
-                            <color key="backgroundColor" red="0.88235294117647056" green="0.24313725490196078" blue="0.24313725490196078" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="55" id="QKW-c3-OwO"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <inset key="titleEdgeInsets" minX="-32" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <button opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abt-dZ-axW">
+                            <rect key="frame" x="267" y="9" width="37" height="30"/>
+                            <animations/>
                             <inset key="imageEdgeInsets" minX="32" minY="1" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="0" image="UzysAssetPickerController.bundle/uzysAP_ico_upload_done.png">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
+                            <state key="normal" title="Done"/>
                             <connections>
                                 <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="sbl-ar-Pla"/>
                             </connections>
                         </button>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="44q-K1-3XI">
+                        <segmentedControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="44q-K1-3XI">
                             <rect key="frame" x="85" y="10" width="150" height="29"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="150" id="GmF-cg-Lkw"/>
                             </constraints>
@@ -113,6 +110,7 @@
                         </segmentedControl>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HUE-lo-MS3">
                             <rect key="frame" x="80" y="12" width="160" height="24"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="160" id="HP4-c4-4oE"/>
                             </constraints>
@@ -121,13 +119,14 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8h0-kN-iqH" userLabel="Button - Camera">
-                            <rect key="frame" x="8" y="9" width="30" height="30"/>
+                            <rect key="frame" x="8" y="4" width="40" height="40"/>
+                            <animations/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="30" id="DOI-aS-uvz"/>
-                                <constraint firstAttribute="height" constant="30" id="mua-Rx-Xrs"/>
+                                <constraint firstAttribute="width" constant="40" id="DOI-aS-uvz"/>
+                                <constraint firstAttribute="height" constant="40" id="mua-Rx-Xrs"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" image="UzysAssetPickerController.bundle/uzysAP_ico_upload_camera.png">
+                            <state key="normal" image="uzysAP_ico_upload_camera.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -135,22 +134,23 @@
                             </connections>
                         </button>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="abt-dZ-axW" secondAttribute="trailing" constant="16" id="3TZ-fj-zIL"/>
-                        <constraint firstItem="abt-dZ-axW" firstAttribute="top" secondItem="kxD-PY-Oat" secondAttribute="top" constant="9" id="6fZ-3n-daD"/>
                         <constraint firstItem="8h0-kN-iqH" firstAttribute="leading" secondItem="kxD-PY-Oat" secondAttribute="leading" constant="8" id="Aax-ZA-pbn"/>
                         <constraint firstItem="HUE-lo-MS3" firstAttribute="top" secondItem="kxD-PY-Oat" secondAttribute="top" constant="12" id="BDJ-M9-sLm"/>
+                        <constraint firstItem="abt-dZ-axW" firstAttribute="centerY" secondItem="HUE-lo-MS3" secondAttribute="centerY" id="BgU-Fm-Y1T"/>
                         <constraint firstAttribute="centerX" secondItem="HUE-lo-MS3" secondAttribute="centerX" id="Cqb-PH-WEn"/>
-                        <constraint firstItem="8h0-kN-iqH" firstAttribute="top" secondItem="kxD-PY-Oat" secondAttribute="top" constant="9" id="NKE-1D-iRI"/>
+                        <constraint firstItem="8h0-kN-iqH" firstAttribute="centerY" secondItem="HUE-lo-MS3" secondAttribute="centerY" id="PLH-Ze-yY5"/>
                         <constraint firstAttribute="bottom" secondItem="HUE-lo-MS3" secondAttribute="bottom" constant="12" id="ZA1-gd-zrp"/>
                         <constraint firstAttribute="height" constant="48" id="dnt-YD-Jtz"/>
-                        <constraint firstAttribute="bottom" secondItem="abt-dZ-axW" secondAttribute="bottom" constant="9" id="ehi-Px-fag"/>
                         <constraint firstItem="44q-K1-3XI" firstAttribute="top" secondItem="kxD-PY-Oat" secondAttribute="top" constant="10" id="sPa-Ne-XLU"/>
                         <constraint firstAttribute="centerX" secondItem="44q-K1-3XI" secondAttribute="centerX" id="x1J-0Q-Ppt"/>
                     </constraints>
                 </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="kxD-PY-Oat" secondAttribute="trailing" id="1Ea-x9-NZ5"/>
@@ -163,14 +163,8 @@
         </view>
     </objects>
     <resources>
-        <image name="UzysAssetPickerController.bundle/uzysAP_ico_arrow_upload_album_d.png" width="15" height="15"/>
-        <image name="UzysAssetPickerController.bundle/uzysAP_ico_upload_camera.png" width="15" height="15"/>
-        <image name="UzysAssetPickerController.bundle/uzysAP_ico_upload_done.png" width="15" height="15"/>
-        <image name="UzysAssetPickerController.bundle/uzysAP_navi_icon_close.png" width="15" height="15"/>
+        <image name="uzysAP_ico_arrow_upload_album_d.png" width="9" height="9"/>
+        <image name="uzysAP_ico_upload_camera.png" width="24" height="24"/>
+        <image name="uzysAP_navi_icon_close.png" width="15" height="15"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

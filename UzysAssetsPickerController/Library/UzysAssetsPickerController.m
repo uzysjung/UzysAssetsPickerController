@@ -85,6 +85,18 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (UzysStringsConfig *)stringsConfiguration
+{
+    if (!_stringsConfiguration) {
+        _stringsConfiguration = [[UzysStringsConfig alloc] init];
+        
+    }
+    
+    return _stringsConfiguration;
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -141,12 +153,6 @@
 }
 - (void)setupLayout
 {
-    UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
-    [self.btnCamera setImage:[UIImage Uzys_imageNamed:appearanceConfig.cameraImageName] forState:UIControlStateNormal];
-    [self.btnClose setImage:[UIImage Uzys_imageNamed:appearanceConfig.closeImageName] forState:UIControlStateNormal];
-    self.btnDone.layer.cornerRadius = 15;
-    self.btnDone.clipsToBounds = YES;
-    [self.btnDone setBackgroundColor:appearanceConfig.finishSelectionButtonColor];
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 0.5)];
     lineView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.15f];
@@ -174,11 +180,6 @@
         self.maximumNumberOfSelection = self.maximumNumberOfSelectionMedia;
         self.segmentedControl.hidden = YES;
         self.labelSelectedMedia.hidden = NO;
-        if(_maximumNumberOfSelection > 1)
-            self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose media", @"UzysAssetsPickerController", nil);
-        else
-            self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose a media", @"UzysAssetsPickerController", nil);
-        
     }
     else
     {
@@ -190,10 +191,6 @@
             self.maximumNumberOfSelection = self.maximumNumberOfSelectionVideo;
             self.segmentedControl.hidden = YES;
             self.labelSelectedMedia.hidden = NO;
-            if(_maximumNumberOfSelection > 1)
-                self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose videos", @"UzysAssetsPickerController", nil);
-            else
-                self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose a video", @"UzysAssetsPickerController", nil);
         }
         else if(_maximumNumberOfSelectionVideo == 0)
         {
@@ -204,10 +201,6 @@
             self.maximumNumberOfSelection = self.maximumNumberOfSelectionPhoto;
             self.segmentedControl.hidden = YES;
             self.labelSelectedMedia.hidden = NO;
-            if(_maximumNumberOfSelection >1)
-                self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose photos", @"UzysAssetsPickerController", nil);
-            else
-                self.labelSelectedMedia.text = NSLocalizedStringFromTable(@"Choose a photo", @"UzysAssetsPickerController", nil);
         }
         else
         {
@@ -255,12 +248,7 @@
 + (void)setUpAppearanceConfig:(UzysAppearanceConfig *)config
 {
     UzysAppearanceConfig *appearanceConfig = [UzysAppearanceConfig sharedConfig];
-    appearanceConfig.assetSelectedImageName = config.assetSelectedImageName;
-    appearanceConfig.assetDeselectedImageName = config.assetDeselectedImageName;
-    appearanceConfig.cameraImageName = config.cameraImageName;
     appearanceConfig.finishSelectionButtonColor = config.finishSelectionButtonColor;
-    appearanceConfig.assetsGroupSelectedImageName = config.assetsGroupSelectedImageName;
-    appearanceConfig.closeImageName = config.closeImageName;
     appearanceConfig.assetsCountInALine = config.assetsCountInALine;
     appearanceConfig.cellSpacing = config.cellSpacing;
 }
@@ -313,6 +301,9 @@
     
     ALAssetsLibraryGroupsEnumerationResultsBlock resultsBlock = ^(ALAssetsGroup *group, BOOL *stop) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf showAllowed];
+        
         if (group)
         {
             [group setAssetsFilter:assetsFilter];
@@ -354,8 +345,7 @@
         strongSelf.segmentedControl.enabled = NO;
         strongSelf.btnDone.enabled = NO;
         strongSelf.btnCamera.enabled = NO;
-        [strongSelf setTitle:NSLocalizedStringFromTable(@"Not Allowed", @"UzysAssetsPickerController",nil)];
-        //        [self.btnTitle setTitle:NSLocalizedStringFromTable(@"Not Allowed", @"UzysAssetsPickerController",nil) forState:UIControlStateNormal];
+        [strongSelf setTitle: self.stringsConfiguration.notAllowedTitle];
         [strongSelf.btnTitle setImage:nil forState:UIControlStateNormal];
         
     };
@@ -411,13 +401,16 @@
 - (void)reloadData
 {
     [self.collectionView reloadData];
-    [self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)self.collectionView.indexPathsForSelectedItems
-                            .count] forState:UIControlStateNormal];
+    self.labelSelectedMedia.text = [self selectedItemsLabelText];
     [self showNoAssetsIfNeeded];
 }
 - (void)setAssetsCountWithSelectedIndexPaths:(NSArray *)indexPaths
 {
-    [self.btnDone setTitle:[NSString stringWithFormat:@"%lu",(unsigned long)indexPaths.count] forState:UIControlStateNormal];
+    self.labelSelectedMedia.text = [self selectedItemsLabelText];
+}
+
+-(NSString*)selectedItemsLabelText {
+    return [NSString stringWithFormat:@"%lu / %lu",(unsigned long)self.collectionView.indexPathsForSelectedItems.count, (unsigned long)self.maximumNumberOfSelection];
 }
 
 #pragma mark - Asset Exception View
@@ -429,14 +422,14 @@
     UILabel *title          = [[UILabel alloc] initWithFrame:rect];
     UILabel *message        = [[UILabel alloc] initWithFrame:rect];
     
-    title.text              = NSLocalizedStringFromTable(@"No Photos or Videos", @"UzysAssetsPickerController", nil);
+    title.text              = self.stringsConfiguration.noMediaItemsTitle;
     title.font              = [UIFont systemFontOfSize:19.0];
     title.textColor         = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1];
     title.textAlignment     = NSTextAlignmentCenter;
     title.numberOfLines     = 5;
     title.tag               = kTagNoAssetViewTitleLabel;
     
-    message.text            = NSLocalizedStringFromTable(@"You can sync photos and videos onto your iPhone using iTunes.", @"UzysAssetsPickerController",nil);
+    message.text            = self.stringsConfiguration.noMediaItemsMessage;
     message.font            = [UIFont systemFontOfSize:15.0];
     message.textColor       = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1];
     message.textAlignment   = NSTextAlignmentCenter;
@@ -462,10 +455,16 @@
     self.noAssetView.hidden = YES;
 }
 
+- (void)showAllowed {
+    self.labelSelectedMedia.hidden = NO;
+    self.btnCamera.hidden = NO;
+}
+
 - (void)showNotAllowed
 {
     self.title              = nil;
-    
+    self.labelSelectedMedia.hidden = YES;
+    self.btnCamera.hidden   = YES;
     UIView *lockedView      = [[UIView alloc] initWithFrame:self.collectionView.bounds];
     UIImageView *locked     = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_no_access"]];
     locked.contentMode      = UIViewContentModeCenter;
@@ -474,13 +473,13 @@
     UILabel *title          = [[UILabel alloc] initWithFrame:rect];
     UILabel *message        = [[UILabel alloc] initWithFrame:rect];
     
-    title.text              = NSLocalizedStringFromTable(@"This app does not have access to your photos or videos.", @"UzysAssetsPickerController",nil);
+    title.text              = self.stringsConfiguration.noMediaAccessErrorTitle;
     title.font              = [UIFont boldSystemFontOfSize:17.0];
     title.textColor         = [UIColor colorWithRed:129.0/255.0 green:136.0/255.0 blue:148.0/255.0 alpha:1];
     title.textAlignment     = NSTextAlignmentCenter;
     title.numberOfLines     = 5;
     
-    message.text            = NSLocalizedStringFromTable(@"You can enable access in Privacy Settings.", @"UzysAssetsPickerController",nil);
+    message.text            = self.stringsConfiguration.noMediaAccessErrorMessage;
     message.font            = [UIFont systemFontOfSize:14.0];
     message.textColor       = [UIColor colorWithRed:129.0/255.0 green:136.0/255.0 blue:148.0/255.0 alpha:1];
     message.textAlignment   = NSTextAlignmentCenter;
@@ -517,18 +516,18 @@
         imgView.image = [UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_no_image"];
         
         UILabel *title = (UILabel *)[weakSelf.noAssetView viewWithTag:kTagNoAssetViewTitleLabel];
-        title.text = NSLocalizedStringFromTable(@"No Photos", @"UzysAssetsPickerController",nil);
+        title.text = self.stringsConfiguration.noMediaItemsTitle;
         UILabel *msg = (UILabel *)[weakSelf.noAssetView viewWithTag:kTagNoAssetViewMsgLabel];
-        msg.text = NSLocalizedStringFromTable(@"You can sync photos onto your iPhone using iTunes.",@"UzysAssetsPickerController", nil);
+        msg.text = self.stringsConfiguration.noMediaItemsMessage;
     };
     voidBlock setNoVideo = ^{
         UIImageView *imgView = (UIImageView *)[weakSelf.noAssetView viewWithTag:kTagNoAssetViewImageView];
         imgView.image = [UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_no_video"];
         DLog(@"no video");
         UILabel *title = (UILabel *)[weakSelf.noAssetView viewWithTag:kTagNoAssetViewTitleLabel];
-        title.text = NSLocalizedStringFromTable(@"No Videos", @"UzysAssetsPickerController",nil);
+        title.text = self.stringsConfiguration.noMediaItemsTitle;
         UILabel *msg = (UILabel *)[weakSelf.noAssetView viewWithTag:kTagNoAssetViewMsgLabel];
-        msg.text = NSLocalizedStringFromTable(@"You can sync videos onto your iPhone using iTunes.",@"UzysAssetsPickerController", nil);
+        msg.text = self.stringsConfiguration.noMediaItemsMessage;
         
     };
     
@@ -554,9 +553,9 @@
                 imgView.image = [UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_no_image"];
                 DLog(@"no media");
                 UILabel *title = (UILabel *)[self.noAssetView viewWithTag:kTagNoAssetViewTitleLabel];
-                title.text = NSLocalizedStringFromTable(@"No Videos", @"UzysAssetsPickerController",nil);
+                title.text = self.stringsConfiguration.noMediaItemsTitle;
                 UILabel *msg = (UILabel *)[self.noAssetView viewWithTag:kTagNoAssetViewMsgLabel];
-                msg.text = NSLocalizedStringFromTable(@"You can sync media onto your iPhone using iTunes.",@"UzysAssetsPickerController", nil);
+                msg.text = self.stringsConfiguration.noMediaItemsMessage;
                 
             }
             else if(self.maximumNumberOfSelectionPhoto == 0)
@@ -895,8 +894,8 @@
         case kTagButtonCamera:
         {
             if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-                NSString *title = NSLocalizedStringFromTable(@"Error", @"UzysAssetsPickerController", nil);
-                NSString *message = NSLocalizedStringFromTable(@"Device has no camera", @"UzysAssetsPickerController", nil);
+                NSString *title = self.stringsConfiguration.noCameraPresentErrorTitle;
+                NSString *message = self.stringsConfiguration.noCameraPresentErrorMessage;
                 UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [myAlertView show];
             }
