@@ -124,6 +124,9 @@ static CGFloat thumnailLength;
         
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, kCGGradientDrawsBeforeStartLocation);
         
+        CGColorSpaceRelease(baseSpace);
+        CGGradientRelease(gradient);
+        
         NSDictionary *attributes = @{NSFontAttributeName:videoTimeFont,NSForegroundColorAttributeName:videoTitleColor};
         CGSize titleSize        = [self.title sizeWithAttributes:attributes];
         [self.title drawInRect:CGRectMake(rect.size.width - (NSInteger)titleSize.width - 2 , startPoint.y + (videoTimeHeight - 12) / 2, thumnailLength, height) withAttributes:attributes];
