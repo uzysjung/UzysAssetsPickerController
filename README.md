@@ -1,3 +1,6 @@
+Please note, This project is no longer maintained because the Assets Library framework is deprecated as of iOS 9.0 
+
+* * *
 UzysAssetsPickerController
 ==========================
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/uzysjung/UzysAssetsPickerController/master/LICENSE)
