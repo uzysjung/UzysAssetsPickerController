@@ -13,18 +13,6 @@
 
 + (UIImage *)Uzys_imageNamed:(NSString *)imageName
 {
-    UIImage *image = [[self class] imageNamed:imageName];
-    if (image) {
-        return image;
-    }
-    NSString *imagePathInControllerBundle = [NSString stringWithFormat:@"UzysAssetPickerController.bundle/%@", imageName];
-    image = [[self class] imageNamed:imagePathInControllerBundle];
-    if(image) {
-        return image;
-    }
-    //for Swift podfile
-    NSString *imagePathInBundleForClass = [NSString stringWithFormat:@"%@/UzysAssetPickerController.bundle/%@", [[NSBundle bundleForClass:[UzysAssetsPickerController class]] resourcePath], imageName ];
-    image = [[self class] imageNamed:imagePathInBundleForClass];
-    return image;
+    return [UIImage imageNamed:imageName inBundle:[NSBundle bundleForClass:[UzysAssetsPickerController class]] compatibleWithTraitCollection:nil];
 }
 @end

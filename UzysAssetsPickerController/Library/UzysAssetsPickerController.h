@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UzysAssetsPickerController_Configuration.h"
 #import "UzysAppearanceConfig.h"
+#import "UzysStringsConfig.h"
 #import <CoreLocation/CoreLocation.h>
 
 @class UzysAssetsPickerController;
@@ -22,6 +23,7 @@
 @interface UzysAssetsPickerController : UIViewController
 @property (nonatomic, strong) ALAssetsFilter *assetsFilter;
 @property (nonatomic, strong) CLLocation * location;
+@property (nonatomic, strong) UzysStringsConfig * stringsConfiguration;
 @property (nonatomic, assign) NSInteger maximumNumberOfSelectionVideo;
 @property (nonatomic, assign) NSInteger maximumNumberOfSelectionPhoto;
 //--------------------------------------------------------------------

@@ -34,10 +34,10 @@ static CGFloat thumnailLength;
     videoTitleColor      = [UIColor whiteColor];
     videoTimeFont       = [UIFont systemFontOfSize:12];
     videoTimeHeight     = 20.0f;
-    videoIcon       = [UIImage imageNamed:@"UzysAssetPickerController.bundle/uzysAP_ico_assets_video"];
+    videoIcon       = [UIImage Uzys_imageNamed:@"uzysAP_ico_assets_video.png"];
     
-    checkedIcon     = [UIImage Uzys_imageNamed:appearanceConfig.assetSelectedImageName];
-    uncheckedIcon   = [UIImage Uzys_imageNamed:appearanceConfig.assetDeselectedImageName];
+    checkedIcon     = [UIImage Uzys_imageNamed:@"uzysAP_ico_photo_thumb_check.png"];
+    uncheckedIcon   = [UIImage Uzys_imageNamed:@"uzysAP_ico_photo_thumb_uncheck.png"];
     selectedColor   = [UIColor colorWithWhite:1 alpha:0.3];
     
     thumnailLength = ([UIScreen mainScreen].bounds.size.width - appearanceConfig.cellSpacing * ((CGFloat)appearanceConfig.assetsCountInALine - 1.0f)) / (CGFloat)appearanceConfig.assetsCountInALine;
