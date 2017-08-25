@@ -902,19 +902,103 @@
             }
             else
             {
-                __weak typeof(self) weakSelf = self;
-                [self presentViewController:self.picker animated:YES completion:^{
-                    __strong typeof(self) strongSelf = weakSelf;
-                    //카메라 화면으로 가면 강제로 카메라 롤로 변경.
-                    NSString *curGroupName =[[strongSelf.assetsGroup valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
-                    NSString *cameraRollName = [[strongSelf.groups[0] valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
+                //Camera Permission
+                AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+                
+                //authStatus
+                if(authStatus == AVAuthorizationStatusAuthorized)
+                {
+                    NSLog(@"%@", @"You have camera access");
                     
-                    if(![curGroupName isEqualToString:cameraRollName] )
-                    {
-                        strongSelf.assetsGroup = strongSelf.groups[0];
-                        [strongSelf changeGroup:0];
-                    }
-                }];
+                    __weak typeof(self) weakSelf = self;
+                    [self presentViewController:self.picker animated:NO completion:^{
+                        __strong typeof(self) strongSelf = weakSelf;
+                        //카메라 화면으로 가면 강제로 카메라 롤로 변경.
+                        NSString *curGroupName =[[strongSelf.assetsGroup valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
+                        NSString *cameraRollName = [[strongSelf.groups[0] valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
+                        
+                        if(![curGroupName isEqualToString:cameraRollName] )
+                        {
+                            strongSelf.assetsGroup = strongSelf.groups[0];
+                            [strongSelf changeGroup:0];
+                        }
+                    }];
+                }
+                else if(authStatus == AVAuthorizationStatusDenied)
+                {
+                    NSLog(@"%@", @"Denied camera access");
+                    
+                    NSString *title = NSLocalizedStringFromTable(@"Permission Denied", @"UzysAssetsPickerController", nil);
+                    NSString *message = NSLocalizedStringFromTable(@"Camera Permission required for this action.", @"UzysAssetsPickerController", nil);
+                    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [myAlertView show];
+                    
+                    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                        if(granted){
+                            NSLog(@"Granted access to %@", AVMediaTypeVideo);
+                            __weak typeof(self) weakSelf = self;
+                            [self presentViewController:self.picker animated:NO completion:^{
+                                __strong typeof(self) strongSelf = weakSelf;
+                                //카메라 화면으로 가면 강제로 카메라 롤로 변경.
+                                NSString *curGroupName =[[strongSelf.assetsGroup valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
+                                NSString *cameraRollName = [[strongSelf.groups[0] valueForProperty:ALAssetsGroupPropertyURL] absoluteString];
+                                
+                                if(![curGroupName isEqualToString:cameraRollName] )
+                                {
+                                    strongSelf.assetsGroup = strongSelf.groups[0];
+                                    [strongSelf changeGroup:0];
+                                }
+                            }];
+                            
+                        } else {
+                            NSLog(@"Not granted access to %@", AVMediaTypeVideo);
+                            NSString *title = NSLocalizedStringFromTable(@"Permission Denied", @"UzysAssetsPickerController", nil);
+                            NSString *message = NSLocalizedStringFromTable(@"Camera Permission required for this action.", @"UzysAssetsPickerController", nil);
+                            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                            [myAlertView show];
+                            
+                        }
+                    }];
+                }
+                else if(authStatus == AVAuthorizationStatusRestricted)
+                {
+                    NSLog(@"%@", @"Restricted, normally won't happen");
+                    NSString *title = NSLocalizedStringFromTable(@"Permission Denied", @"UzysAssetsPickerController", nil);
+                    NSString *message = NSLocalizedStringFromTable(@"Camera Permission required for this action.", @"UzysAssetsPickerController", nil);
+                    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [myAlertView show];
+                    
+                }
+                else if(authStatus == AVAuthorizationStatusNotDetermined)
+                {
+                    NSLog(@"%@", @"Camera access not determined. Ask for permission.");
+                    
+                    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                        if(granted){
+                            NSLog(@"Granted access to %@", AVMediaTypeVideo);
+                            
+                        } else {
+                            NSLog(@"Not granted access to %@", AVMediaTypeVideo);
+                            NSString *title = NSLocalizedStringFromTable(@"Permission Denied", @"UzysAssetsPickerController", nil);
+                            NSString *message = NSLocalizedStringFromTable(@"Camera Permission required for this action.", @"UzysAssetsPickerController", nil);
+                            UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                            [myAlertView show];
+                            
+                        }
+                    }];
+                }
+                else
+                {
+                    NSLog(@"%@", @"Camera access unknown error.");
+                    NSString *title = NSLocalizedStringFromTable(@"Permission Access Error", @"UzysAssetsPickerController", nil);
+                    NSString *message = NSLocalizedStringFromTable(@"Unknown Error Occured", @"UzysAssetsPickerController", nil);
+                    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [myAlertView show];
+                    
+                }
+                
+                
+                //
             }
         }
             break;
