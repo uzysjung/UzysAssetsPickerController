@@ -22,7 +22,7 @@ Alternative UIImagePickerController , You can take a picture with camera and cho
 
 ## Installation
 1. Just add `pod 'UzysAssetsPickerController'` to your Podfile.
-2. Copy over the files libary folder to your project folder
+2. Copy over the files library folder to your project folder
 
 ## Usage
 ###Import header.
